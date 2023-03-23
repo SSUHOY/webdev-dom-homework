@@ -61,7 +61,20 @@
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
 
+  buttonElement.addEventListener('click', () => {
+    const date = new Date();
+    const result2 = new Date().toLocaleString().slice(0, -3);
 
+    const oldListHTML = listElement.innerHTML;
+
+    listElement.innerHTML = oldListHTML + `<li class = 'comment'><div class = 'comment-header'><div>${nameInputElement.value}</div><div>${result2}</div></div>
+      <div class="comment-body"><div class = 'comment-text'>${commentInputElement.value}</div></div><div class ='comment-footer'> <div class="likes">
+            <span class="likes-counter">0</span>
+            <button class="like-button -active-like"></button>
+          </div></div></li>`
+
+    
+  });
 
   
 
