@@ -67,6 +67,20 @@
 
     const oldListHTML = listElement.innerHTML;
 
+    nameInputElement.classList.remove('error')
+    commentInputElement.classList.remove('error')
+    if (commentInputElement.value === '' && nameInputElement.value === "") {
+      nameInputElement.classList.add('error')
+      commentInputElement.classList.add('error')
+      return;
+    } else if (commentInputElement.value === '') {
+      commentInputElement.classList.add('error')
+      return;
+    } else if (nameInputElement.value === '') {
+      nameInputElement.classList.add('error')
+      return
+    }
+
     listElement.innerHTML = oldListHTML + `<li class = 'comment'><div class = 'comment-header'><div>${nameInputElement.value}</div><div>${result2}</div></div>
       <div class="comment-body"><div class = 'comment-text'>${commentInputElement.value}</div></div><div class ='comment-footer'> <div class="likes">
             <span class="likes-counter">0</span>
