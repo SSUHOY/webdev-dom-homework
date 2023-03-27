@@ -64,7 +64,7 @@
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
 
-  
+
 
   const comments = [
     {
@@ -81,13 +81,14 @@
     }
   ];
 
+  console.log(comments[1].likes);
 
   const renderComments = () => {
-    const commentsHtml = comments.map((comment) => {
+    const commentsHtml = comments.map((comment, index) => {
       return `<li class = 'comment'><div class = 'comment-header'><div>${comment.name}</div><div>${comment.date}</div></div>
       <div class="comment-body"><div class = 'comment-text'>${comment.text}</div></div><div class ='comment-footer'> <div class="likes">
-            <span class="likes-counter">${comment.likes}</span>
-            <button class="like-button"></button>
+            <span class="likes-counter" >${comment.likes}</span>
+            <button class="like-button -active-like" data-index="${index}"></button>
           </div></div></li>`
 
     }).join('')
@@ -96,15 +97,17 @@
 
   renderComments();
 
-  const likeButtonElements = document.querySelectorAll('.like-button');
-let count;
-const initLikeButton = () => {
-  for (const likeButton of likeButtonElements) {
-    likeButton.addEventListener('click', () => {
-      likeButton.classList.toggle('-active-like');
-    })
+  
+  const initLikeButton = () => {
+    const likeButtonElements = document.querySelectorAll('.like-button');
+    for (const likeButton of likeButtonElements) {
+      likeButton.addEventListener('click', () => {
+        likeButton.classList.toggle('-active-like');
+        
+      })
+    }
   }
-}
+initLikeButton();
 
 
   buttonElement.addEventListener('click', () => {
@@ -139,14 +142,12 @@ const initLikeButton = () => {
     nameInputElement.value = ''
     commentInputElement.value = ''
 
-    
+
 
     renderComments();
-    
+    initLikeButton();
   });
 
- 
-  initLikeButton();
 
 
   console.log("It works!");
