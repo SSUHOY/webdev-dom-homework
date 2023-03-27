@@ -9,22 +9,22 @@
 <body>
   <div class="container">
     <ul class="comments" id="list">
-      <li class="comment">
-        <div class="comment-header">
-          <div>Глеб Фокин</div>
-          <div>12.02.22 12:18</div>
+      <!-- Список рендерится из JS -->
+      <div class="comment-header">
+        <div>Глеб Фокин</div>
+        <div>12.02.22 12:18</div>
+      </div>
+      <div class="comment-body">
+        <div class="comment-text">
+          Это будет первый комментарий на этой странице
         </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            Это будет первый комментарий на этой странице
-          </div>
+      </div>
+      <div class="comment-footer">
+        <div class="likes">
+          <span class="likes-counter">3</span>
+          <button class="like-button"></button>
         </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">3</span>
-            <button class="like-button"></button>
-          </div>
-        </div>
+      </div>
       </li>
       <li class="comment">
         <div class="comment-header">
@@ -42,7 +42,7 @@
             <button class="like-button -active-like"></button>
           </div>
         </div>
-      </li>
+      </li> -->
     </ul>
     <div class="add-form">
       <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" />
@@ -56,16 +56,52 @@
 </body>
 
 <script>
+
+
+
   const listElement = document.getElementById('list');
   const buttonElement = document.getElementById('buttonElement')
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
 
+  
+
+  const comments = [
+    {
+      name: "Глеб Фокин",
+      date: '12.02.22 12:18',
+      text: 'Это будет первый комментарий на этой странице',
+      likes: 35
+    },
+    {
+      name: 'Варвара Н.',
+      date: '13.02.22 19:22',
+      text: 'Мне нравится как оформлена эта страница! ❤',
+      likes: 8
+    }
+  ];
+
+
+  const renderComments = () => {
+    const commentsHtml = comments.map((comment) => {
+      return `<li class = 'comment'><div class = 'comment-header'><div>${comment.name}</div><div>${comment.date}</div></div>
+      <div class="comment-body"><div class = 'comment-text'>${comment.text}</div></div><div class ='comment-footer'> <div class="likes">
+            <span class="likes-counter">${comment.likes}</span>
+            <button class="like-button"></button>
+          </div></div></li>`
+
+    }).join('')
+    listElement.innerHTML = commentsHtml;
+  }
+
+  renderComments();
+
+ 
   buttonElement.addEventListener('click', () => {
+
     const date = new Date();
     const result2 = new Date().toLocaleString().slice(0, -3);
 
-    const oldListHTML = listElement.innerHTML;
 
     nameInputElement.classList.remove('error')
     commentInputElement.classList.remove('error')
@@ -81,20 +117,33 @@
       return
     }
 
-    listElement.innerHTML = oldListHTML + `<li class = 'comment'><div class = 'comment-header'><div>${nameInputElement.value}</div><div>${result2}</div></div>
-      <div class="comment-body"><div class = 'comment-text'>${commentInputElement.value}</div></div><div class ='comment-footer'> <div class="likes">
-            <span class="likes-counter">0</span>
-            <button class="like-button -active-like"></button>
-          </div></div></li>`
+    comments.push({
+      name: nameInputElement.value,
+      text: commentInputElement.value,
+      date: result2,
+      likes: 0,
+    });
+
+
 
     nameInputElement.value = ''
     commentInputElement.value = ''
+
+    
+
+    renderComments();
+    
   });
 
+ 
 
 
 
   console.log("It works!");
+
+
+
+
 </script>
 
 </html>
