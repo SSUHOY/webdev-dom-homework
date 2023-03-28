@@ -99,7 +99,7 @@
     initLikeButtonOnOff();
   }
 
- 
+//  валидация значений при вводе
 
   buttonElement.addEventListener('click', () => {
 
@@ -119,6 +119,8 @@
       nameInputElement.classList.add('error')
       return
     }
+
+    // пуш в массив для нового коммента
 
     comments.push({
       name: nameInputElement.value,
