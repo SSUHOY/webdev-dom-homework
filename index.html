@@ -9,22 +9,22 @@
 <body>
   <div class="container">
     <ul class="comments" id="list">
-      <li class="comment">
-        <div class="comment-header">
-          <div>Глеб Фокин</div>
-          <div>12.02.22 12:18</div>
+      <!-- Список рендерится из JS -->
+      <div class="comment-header">
+        <div>Глеб Фокин</div>
+        <div>12.02.22 12:18</div>
+      </div>
+      <div class="comment-body">
+        <div class="comment-text">
+          Это будет первый комментарий на этой странице
         </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            Это будет первый комментарий на этой странице
-          </div>
+      </div>
+      <div class="comment-footer">
+        <div class="likes">
+          <span class="likes-counter">3</span>
+          <button class="like-button"></button>
         </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">3</span>
-            <button class="like-button"></button>
-          </div>
-        </div>
+      </div>
       </li>
       <li class="comment">
         <div class="comment-header">
@@ -42,7 +42,7 @@
             <button class="like-button -active-like"></button>
           </div>
         </div>
-      </li>
+      </li> -->
     </ul>
     <div class="add-form">
       <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" />
@@ -56,16 +56,55 @@
 </body>
 
 <script>
+
+  // обьявление переменных
+
   const listElement = document.getElementById('list');
   const buttonElement = document.getElementById('buttonElement')
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
 
+
+
+  // массив для рендера
+
+  const comments = [
+    {
+      name: "Глеб Фокин",
+      date: '12.02.22 12:18',
+      text: 'Это будет первый комментарий на этой странице',
+      likeCounter: '3',
+      likeButton: '',
+    },
+    {
+      name: 'Варвара Н.',
+      date: '13.02.22 19:22',
+      text: 'Мне нравится как оформлена эта страница! ❤',
+      likeCounter: '75',
+      likeButton: '-active-like',
+    }
+  ];
+  // рендер комментов на основе массива
+
+  const renderComments = () => {
+    const commentsHtml = comments.map((comment, index) => {
+      return `<li class = 'comment'><div class = 'comment-header'><div>${comment.name}</div><div>${comment.date}</div></div>
+      <div class="comment-body"><div class = 'comment-text'>${comment.text}</div></div><div class ='comment-footer'> <div class="likes">
+            <span class="likes-counter" >${comments[index].likeCounter}</span>
+            <button class="like-button ${comments[index].likeButton}" data-index="${index}"></button>
+          </div></div></li>`
+
+    }).join('')
+    listElement.innerHTML = commentsHtml;
+    initLikeButtonOnOff();
+  }
+
+//  валидация значений при вводе
+
   buttonElement.addEventListener('click', () => {
+
     const date = new Date();
     const result2 = new Date().toLocaleString().slice(0, -3);
-
-    const oldListHTML = listElement.innerHTML;
 
     nameInputElement.classList.remove('error')
     commentInputElement.classList.remove('error')
@@ -81,20 +120,49 @@
       return
     }
 
-    listElement.innerHTML = oldListHTML + `<li class = 'comment'><div class = 'comment-header'><div>${nameInputElement.value}</div><div>${result2}</div></div>
-      <div class="comment-body"><div class = 'comment-text'>${commentInputElement.value}</div></div><div class ='comment-footer'> <div class="likes">
-            <span class="likes-counter">0</span>
-            <button class="like-button -active-like"></button>
-          </div></div></li>`
+    // пуш в массив для нового коммента
+
+    comments.push({
+      name: nameInputElement.value,
+      text: commentInputElement.value,
+      date: result2,
+      likeCounter: 0,
+      likeButton: '',
+    });
 
     nameInputElement.value = ''
     commentInputElement.value = ''
+
+    initLikeButtonOnOff();
+    renderComments();
+
   });
+  // кнопка для лайка, с ветвлением при нажатии
 
+  const initLikeButtonOnOff = () => {
+    const likeButtonElements = document.querySelectorAll('.like-button');
+    for (const likeButton of likeButtonElements) {
+      likeButton.addEventListener('click', () => {
+        const index = likeButton.dataset.index;
 
+        if (comments[index].likeButton == '-active-like') {
+          comments[index].likeButton = '';
+          comments[index].likeCounter--;
+        } else {
+          comments[index].likeButton = '-active-like';
+          comments[index].likeCounter++;
+        }
+        renderComments();
+      })
+    }
+  }
+
+  initLikeButtonOnOff();
+  renderComments();
 
 
   console.log("It works!");
+
 </script>
 
 </html>
