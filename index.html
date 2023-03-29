@@ -99,7 +99,7 @@
     initLikeButtonOnOff();
   }
 
-//  валидация значений при вводе
+  //  валидация значений при вводе
 
   buttonElement.addEventListener('click', () => {
 
@@ -123,8 +123,16 @@
     // пуш в массив для нового коммента
 
     comments.push({
-      name: nameInputElement.value,
-      text: commentInputElement.value,
+      name: nameInputElement.value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
+      text: commentInputElement.value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
       date: result2,
       likeCounter: 0,
       likeButton: '',
