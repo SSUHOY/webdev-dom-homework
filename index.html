@@ -89,14 +89,16 @@
   const renderComments = () => {
     const commentsHtml = comments.map((comment, index) => {
       return `<li class = 'comment'><div class = 'comment-header'><div>${comment.name}</div><div>${comment.date}</div></div>
-      <div class="comment-body"><div class = 'comment-text'>${comment.text}</div></div><div class ='comment-footer'> <div class="likes">
+      <div class="comment-body" ><div class = 'comment-text'>${comment.text}</div></div><div class ='comment-footer'> <div class="likes">
             <span class="likes-counter" >${comments[index].likeCounter}</span>
             <button class="like-button ${comments[index].likeButton}" data-index="${index}"></button>
           </div></div></li>`
 
     }).join('')
     listElement.innerHTML = commentsHtml;
+    initReplyListeners();
     initLikeButtonOnOff();
+    
   }
 
   //  валидация значений при вводе
@@ -138,6 +140,8 @@
       likeButton: '',
     });
 
+    
+
     nameInputElement.value = ''
     commentInputElement.value = ''
 
@@ -152,7 +156,7 @@
     for (const likeButton of likeButtonElements) {
       likeButton.addEventListener('click', () => {
         const index = likeButton.dataset.index;
-
+        console.log(index);
         if (comments[index].likeButton == '-active-like') {
           comments[index].likeButton = '';
           comments[index].likeCounter--;
@@ -165,11 +169,26 @@
     }
   }
 
+  
+// клик по комментарию добавляется в поле ввода: цитирование
+
+const initReplyListeners = () => {
+    const replyClicks = document.querySelectorAll('.comment-body'); {
+      for (const replyClick of replyClicks) {
+        replyClick.addEventListener('click', () => {
+          const repliedText = `&gt; ${comments[1].text} white-space: pre-line ${comments[1].name}`;
+          commentInputElement.value = repliedText;
+        });
+      }
+    }
+  }
+  initReplyListeners();
   initLikeButtonOnOff();
   renderComments();
 
 
   console.log("It works!");
+  
 
 </script>
 
