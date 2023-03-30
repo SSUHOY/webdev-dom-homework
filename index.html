@@ -88,8 +88,8 @@
 
   const renderComments = () => {
     const commentsHtml = comments.map((comment, index) => {
-      return `<li class = 'comment'><div class = 'comment-header'><div>${comment.name}</div><div>${comment.date}</div></div>
-      <div class="comment-body" ><div class = 'comment-text'>${comment.text}</div></div><div class ='comment-footer'> <div class="likes">
+      return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
+      <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class="likes">
             <span class="likes-counter" >${comments[index].likeCounter}</span>
             <button class="like-button ${comments[index].likeButton}" data-index="${index}"></button>
           </div></div></li>`
@@ -98,9 +98,14 @@
     listElement.innerHTML = commentsHtml;
     initReplyListeners();
     initLikeButtonOnOff();
-    
-  }
 
+  }
+// очистка кода 
+ 
+function sanitizeHtml(htmlString = "") { 
+  return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;"); 
+} 
+sanitizeHtml();
   //  валидация значений при вводе
 
   buttonElement.addEventListener('click', () => {
@@ -127,20 +132,16 @@
     comments.push({
       name: nameInputElement.value
         .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;"),
       text: commentInputElement.value
         .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;"),
       date: result2,
       likeCounter: 0,
       likeButton: '',
     });
 
-    
+
 
     nameInputElement.value = ''
     commentInputElement.value = ''
@@ -169,15 +170,18 @@
     }
   }
 
-  
-// клик по комментарию добавляется в поле ввода: цитирование
 
-const initReplyListeners = () => {
-    const replyClicks = document.querySelectorAll('.comment-body'); {
+  // клик по комментарию добавляется в поле ввода: цитирование
+
+  const initReplyListeners = () => {
+    const replyClicks = document.querySelectorAll('.comment'); {
       for (const replyClick of replyClicks) {
         replyClick.addEventListener('click', () => {
-          const repliedText = `&gt; ${comments[1].text} white-space: pre-line ${comments[1].name}`;
-          commentInputElement.value = repliedText;
+          const index = replyClick.dataset.index;
+          commentInputElement.value = 
+          `>${comments[index].text} 
+           
+${comments[index].name},`;
         });
       }
     }
@@ -188,7 +192,7 @@ const initReplyListeners = () => {
 
 
   console.log("It works!");
-  
+
 
 </script>
 
