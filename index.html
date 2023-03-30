@@ -156,7 +156,8 @@ sanitizeHtml();
   const initLikeButtonOnOff = () => {
     const likeButtonElements = document.querySelectorAll('.like-button');
     for (const likeButton of likeButtonElements) {
-      likeButton.addEventListener('click', () => {
+      likeButton.addEventListener('click', (event) => {
+        event.stopPropagation(); 
         const index = likeButton.dataset.index;
         console.log(index);
         if (comments[index].likeButton == '-active-like') {
