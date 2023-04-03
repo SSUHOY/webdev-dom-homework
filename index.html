@@ -168,7 +168,7 @@
       text: commentInputElement.value
         .replaceAll("&", "&amp;")
         .replaceAll('"', "&quot;"),
-      date: result2,
+      // date: result2,
       // likeCounter: 0,
       // likeButton: '',
     });
@@ -180,20 +180,10 @@
       body: JSON.stringify({
         name: nameInputElement.value,
         text: commentInputElement.value,
-        isLiked: false,
       })
     }).then((response) => {
       response.json().then((responseData) => {
-        const formatCommentsAdd = responseData.comments.map((comment) => {
-        return {
-          name: comment.author.name,
-          text: comment.text,
-          date: new Date().toLocaleString().slice(0, -3),
-          likes: comment.likes,
-          isLiked: false,
-        };
-      })
-        comments = responseData.formatCommentsAdd;
+        comments = responseData.comments;
         renderComments();
       });
     });
