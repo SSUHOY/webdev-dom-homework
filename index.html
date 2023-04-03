@@ -56,7 +56,7 @@
 </body>
 
 <script>
-// задание 2.11 DOM 3. Всплытие событий. Ограничения innerHtml
+  // задание 2.11 DOM 3. Всплытие событий. Ограничения innerHtml
 
   // обьявление переменных
 
@@ -85,43 +85,36 @@
     // }
   ];
 
-// берем данные из массива с помощью GET и загружаем на сервер
+  // берем данные из массива с помощью GET и загружаем на сервер
 
-const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
-      method: "GET"
-    });  console.log(fetchPromise);
+  const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+    method: "GET"
+  });
 
-    // подписываемся на успешное завершение запроса с помощью then
-    fetchPromise.then((response) => {
-      // Запускаем преобразовываем "сырые" данные от API в json формат
-      const jsonPromise = response.json();
-      console.log(jsonPromise);
-      // Подписываемся на результат преобразования
-      jsonPromise.then((responseData) => {
-        console.log(responseData);
-        // получили данные и рендерим их в приложении
-        comments = responseData.comments;
-        renderComments();
-      });
+  // подписываемся на успешное завершение запроса с помощью then
+  fetchPromise.then((response) => {
+    // Запускаем преобразовываем "сырые" данные от API в json формат
+    const jsonPromise = response;
+    // Подписываемся на результат преобразования
+    jsonPromise.json().then((responseData) => {
+      // приведение к нужному формату данных
+      const formatComments = responseData.comments.map ((comment) => {
+        return {
+          name: comment.author.name,
+          text: comment.text,
+          date: new Date().toLocaleString().slice(0, -3),
+          likes: comment.likes,
+          isLiked:false,
+        };
+        console.log(formatComments);
+      })
+
+      // получили данные и рендерим их в приложении
+      comments = formatComments;
+      renderComments();
     });
+  });
 
-// форматирование данных в нужном виде
-
-//     js.json().then((responseData) => {
-// // преобразование данных  из формата api в формат приложения
-// const appComments = responseData.comments.map ((comment) =>{
-//   return {
-//     name: comment.author.name,
-//     // преобразование строки в DATE
-//     date: new Date(comment.date),
-//     text: comment.text,
-//     likeCounter: comment.likeCounter,
-//     isLiked:false,
-//   };
-// });
-// comments = appComments;
-// renderComments();
-//     });
 
   // рендер комментов на основе массива
 
@@ -140,12 +133,12 @@ const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyo
     initLikeButtonOnOff();
 
   }
-// очистка кода , доработал функцию вызова проверки кода на теги
- 
-function sanitizeHtml(htmlString = "") { 
-  return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;"); 
-} 
-sanitizeHtml();
+  // очистка кода , доработал функцию вызова проверки кода на теги
+
+  function sanitizeHtml(htmlString = "") {
+    return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  sanitizeHtml();
   //  валидация значений при вводе
 
   buttonElement.addEventListener('click', () => {
@@ -181,17 +174,17 @@ sanitizeHtml();
       likeButton: '',
     });
 
-// добавление нового комментария и загрузка в сервер API
+    // добавление нового комментария и загрузка в сервер API
 
     fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
       method: 'POST',
-      body:JSON.stringify({
+      body: JSON.stringify({
         name: nameInputElement.value,
         text: commentInputElement.value
       })
     }).then((response) => {
       response.json().then((responseData) => {
-        // после получения данных рендер их в приложении
+        // после получения данных, рендер их в приложении
         tasks = responseData.comments;
         renderComments();
       });
@@ -210,7 +203,7 @@ sanitizeHtml();
     const likeButtonElements = document.querySelectorAll('.like-button');
     for (const likeButton of likeButtonElements) {
       likeButton.addEventListener('click', (event) => {
-        event.stopPropagation(); 
+        event.stopPropagation();
         const index = likeButton.dataset.index;
         console.log(index);
         if (comments[index].likeButton == '-active-like') {
@@ -233,8 +226,8 @@ sanitizeHtml();
       for (const replyClick of replyClicks) {
         replyClick.addEventListener('click', () => {
           const index = replyClick.dataset.index;
-          commentInputElement.value = 
-          `>${comments[index].text} 
+          commentInputElement.value =
+            `>${comments[index].text} 
   
          ${comments[index].name},`;
         });
