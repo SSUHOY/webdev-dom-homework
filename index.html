@@ -67,9 +67,11 @@
 
 
 
+
+
   // массив для рендера
 
-  const comments = [
+  let comments = [
     {
       name: "Глеб Фокин",
       date: '12.02.22 12:18',
@@ -85,7 +87,34 @@
       likeButton: '-active-like',
     }
   ];
+
+// берем данные из массива с помощью GET и загружаем на сервер
+
+const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+      method: "GET"
+    });  console.log(fetchPromise);
+
+    // подписываемся на успешное завершение запроса с помощью then
+    fetchPromise.then((response) => {
+      // Запускаем преобразовываем "сырые" данные от API в json формат
+      const jsonPromise = response.json();
+      console.log(jsonPromise);
+      // Подписываемся на результат преобразования
+      jsonPromise.then((responseData) => {
+        console.log(responseData);
+        // получили данные и рендерим их в приложении
+        comments = responseData.comments;
+        console.log(comments);
+        renderComments();
+      });
+    });
+
+//     res.json().then((responseData) => {
+// // преобразование данных 
+//     }
+
   // рендер комментов на основе массива
+
 
   const renderComments = () => {
     const commentsHtml = comments.map((comment, index) => {
@@ -182,8 +211,8 @@ sanitizeHtml();
           const index = replyClick.dataset.index;
           commentInputElement.value = 
           `>${comments[index].text} 
-           
-${comments[index].name},`;
+  
+         ${comments[index].name},`;
         });
       }
     }
