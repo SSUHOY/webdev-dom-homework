@@ -122,7 +122,7 @@
     const commentsHtml = comments.map((comment, index) => {
       return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
       <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class="likes">
-            <span class="likes-counter" >${comments[index].likeCounter}</span>
+            <span class="likes-counter" >${comments[index].likes}</span>
             <button class="like-button ${comments[index].likeButton}" data-index="${index}"></button>
           </div></div></li>`
 
@@ -179,12 +179,21 @@
       method: 'POST',
       body: JSON.stringify({
         name: nameInputElement.value,
-        text: commentInputElement.value
+        text: commentInputElement.value,
+        isLiked: false,
       })
     }).then((response) => {
       response.json().then((responseData) => {
-        // после получения данных, рендер их в приложении
-        tasks = responseData.comments;
+        const formatCommentsAdd = responseData.comments.map((comment) => {
+        return {
+          name: comment.author.name,
+          text: comment.text,
+          date: new Date().toLocaleString().slice(0, -3),
+          likes: comment.likes,
+          isLiked: false,
+        };
+      })
+        comments = responseData.formatCommentsAdd;
         renderComments();
       });
     });
@@ -206,10 +215,10 @@
         const index = likeButton.dataset.index;
         if (comments[index].likeButton == '-active-like') {
           comments[index].likeButton = '';
-          comments[index].likeCounter--;
+          comments[index].likes--;
         } else {
           comments[index].likeButton = '-active-like';
-          comments[index].likeCounter++;
+          comments[index].likes++;
         }
         renderComments();
       })
@@ -226,7 +235,7 @@
           const index = replyClick.dataset.index;
           commentInputElement.value =
             `>${comments[index].text} 
-            
+
    ${comments[index].name},`;
         });
       }
