@@ -56,6 +56,7 @@
 </body>
 
 <script>
+// задание 2.11 DOM 3. Всплытие событий. Ограничения innerHtml
 
   // обьявление переменных
 
@@ -88,18 +89,25 @@
 
   const renderComments = () => {
     const commentsHtml = comments.map((comment, index) => {
-      return `<li class = 'comment'><div class = 'comment-header'><div>${comment.name}</div><div>${comment.date}</div></div>
-      <div class="comment-body"><div class = 'comment-text'>${comment.text}</div></div><div class ='comment-footer'> <div class="likes">
+      return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
+      <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class="likes">
             <span class="likes-counter" >${comments[index].likeCounter}</span>
             <button class="like-button ${comments[index].likeButton}" data-index="${index}"></button>
           </div></div></li>`
 
     }).join('')
     listElement.innerHTML = commentsHtml;
+    initReplyListeners();
     initLikeButtonOnOff();
-  }
 
-//  валидация значений при вводе
+  }
+// очистка кода , доработал функцию вызова проверки кода на теги
+ 
+function sanitizeHtml(htmlString = "") { 
+  return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;"); 
+} 
+sanitizeHtml();
+  //  валидация значений при вводе
 
   buttonElement.addEventListener('click', () => {
 
@@ -123,12 +131,18 @@
     // пуш в массив для нового коммента
 
     comments.push({
-      name: nameInputElement.value,
-      text: commentInputElement.value,
+      name: nameInputElement.value
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;"),
+      text: commentInputElement.value
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;"),
       date: result2,
       likeCounter: 0,
       likeButton: '',
     });
+
+
 
     nameInputElement.value = ''
     commentInputElement.value = ''
@@ -142,9 +156,10 @@
   const initLikeButtonOnOff = () => {
     const likeButtonElements = document.querySelectorAll('.like-button');
     for (const likeButton of likeButtonElements) {
-      likeButton.addEventListener('click', () => {
+      likeButton.addEventListener('click', (event) => {
+        event.stopPropagation(); 
         const index = likeButton.dataset.index;
-
+        console.log(index);
         if (comments[index].likeButton == '-active-like') {
           comments[index].likeButton = '';
           comments[index].likeCounter--;
@@ -157,11 +172,29 @@
     }
   }
 
+
+  // клик по комментарию добавляется в поле ввода: цитирование
+
+  const initReplyListeners = () => {
+    const replyClicks = document.querySelectorAll('.comment'); {
+      for (const replyClick of replyClicks) {
+        replyClick.addEventListener('click', () => {
+          const index = replyClick.dataset.index;
+          commentInputElement.value = 
+          `>${comments[index].text} 
+           
+${comments[index].name},`;
+        });
+      }
+    }
+  }
+  initReplyListeners();
   initLikeButtonOnOff();
   renderComments();
 
 
   console.log("It works!");
+
 
 </script>
 
