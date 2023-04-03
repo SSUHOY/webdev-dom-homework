@@ -98,17 +98,16 @@
     // Подписываемся на результат преобразования
     jsonPromise.json().then((responseData) => {
       // приведение к нужному формату данных
-      const formatComments = responseData.comments.map ((comment) => {
+      const formatComments = responseData.comments.map((comment) => {
         return {
           name: comment.author.name,
           text: comment.text,
           date: new Date().toLocaleString().slice(0, -3),
           likes: comment.likes,
-          isLiked:false,
+          isLiked: false,
         };
-        console.log(formatComments);
       })
-
+      console.log(formatComments);
       // получили данные и рендерим их в приложении
       comments = formatComments;
       renderComments();
@@ -170,8 +169,8 @@
         .replaceAll("&", "&amp;")
         .replaceAll('"', "&quot;"),
       date: result2,
-      likeCounter: 0,
-      likeButton: '',
+      // likeCounter: 0,
+      // likeButton: '',
     });
 
     // добавление нового комментария и загрузка в сервер API
@@ -205,7 +204,6 @@
       likeButton.addEventListener('click', (event) => {
         event.stopPropagation();
         const index = likeButton.dataset.index;
-        console.log(index);
         if (comments[index].likeButton == '-active-like') {
           comments[index].likeButton = '';
           comments[index].likeCounter--;
@@ -228,8 +226,8 @@
           const index = replyClick.dataset.index;
           commentInputElement.value =
             `>${comments[index].text} 
-  
-         ${comments[index].name},`;
+            
+   ${comments[index].name},`;
         });
       }
     }
