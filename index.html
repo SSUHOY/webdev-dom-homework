@@ -65,27 +65,24 @@
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
 
-
-
-
-
   // массив для рендера
 
   let comments = [
-    {
-      name: "Глеб Фокин",
-      date: '12.02.22 12:18',
-      text: 'Это будет первый комментарий на этой странице',
-      likeCounter: '3',
-      likeButton: '',
-    },
-    {
-      name: 'Варвара Н.',
-      date: '13.02.22 19:22',
-      text: 'Мне нравится как оформлена эта страница! ❤',
-      likeCounter: '75',
-      likeButton: '-active-like',
-    }
+    // РЕНДЕРИТСЯ ИЗ API
+    // {
+    //   name: "Глеб Фокин",
+    //   date: '12.02.22 12:18',
+    //   text: 'Это будет первый комментарий на этой странице',
+    //   likeCounter: '3',
+    //   likeButton: '',
+    // },
+    // {
+    //   name: 'Варвара Н.',
+    //   date: '13.02.22 19:22',
+    //   text: 'Мне нравится как оформлена эта страница! ❤',
+    //   likeCounter: '75',
+    //   likeButton: '-active-like',
+    // }
   ];
 
 // берем данные из массива с помощью GET и загружаем на сервер
@@ -104,14 +101,27 @@ const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyo
         console.log(responseData);
         // получили данные и рендерим их в приложении
         comments = responseData.comments;
-        console.log(comments);
         renderComments();
       });
     });
 
-//     res.json().then((responseData) => {
-// // преобразование данных 
-//     }
+// форматирование данных в нужном виде
+
+//     js.json().then((responseData) => {
+// // преобразование данных  из формата api в формат приложения
+// const appComments = responseData.comments.map ((comment) =>{
+//   return {
+//     name: comment.author.name,
+//     // преобразование строки в DATE
+//     date: new Date(comment.date),
+//     text: comment.text,
+//     likeCounter: comment.likeCounter,
+//     isLiked:false,
+//   };
+// });
+// comments = appComments;
+// renderComments();
+//     });
 
   // рендер комментов на основе массива
 
@@ -171,7 +181,21 @@ sanitizeHtml();
       likeButton: '',
     });
 
+// добавление нового комментария и загрузка в сервер API
 
+    fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
+      method: 'POST',
+      body:JSON.stringify({
+        name: nameInputElement.value,
+        text: commentInputElement.value
+      })
+    }).then((response) => {
+      response.json().then((responseData) => {
+        // после получения данных рендер их в приложении
+        tasks = responseData.comments;
+        renderComments();
+      });
+    });
 
     nameInputElement.value = ''
     commentInputElement.value = ''
