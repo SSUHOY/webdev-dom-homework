@@ -42,7 +42,7 @@
             <button class="like-button -active-like"></button>
           </div>
         </div>
-      </li> -->
+      </li> 
     </ul>
     <div class="add-form">
       <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" />
@@ -63,6 +63,8 @@
   const buttonElement = document.getElementById('buttonElement')
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
+
+  let comments = [];
 
 
  // Рендер комментов на основе массива
@@ -122,9 +124,6 @@
   //  Валидация значений при вводе
   buttonElement.addEventListener('click', () => {
 
-    const date = new Date();
-    const result2 = new Date().toLocaleString().slice(0, -3);
-
     nameInputElement.classList.remove('error')
     commentInputElement.classList.remove('error')
     if (commentInputElement.value === '' && nameInputElement.value === "") {
@@ -139,20 +138,6 @@
       return
     }
 
-    // пуш в массив для нового коммента
-
-    // comments.push({
-    //   name: nameInputElement.value
-    //     .replaceAll("&", "&amp;")
-    //     .replaceAll('"', "&quot;"),
-    //   text: commentInputElement.value
-    //     .replaceAll("&", "&amp;")
-    //     .replaceAll('"', "&quot;"),
-    //   // date: result2,
-    //   // likeCounter: 0,
-    //   // likeButton: '',
-    // });
-
     // добавление нового комментария и загрузка в сервер API
     fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
       method: 'POST',
@@ -161,14 +146,7 @@
         text: commentInputElement.value,
       })
     }).then((response) => {
-      response.json().then((responseData) => {
-        comments = responseData.comments;
-        renderComments();
-      });
-    });
-    renderComments();
-
-    // GET нового массива комментов после добавления нового
+         // GET нового массива комментов после добавления нового
     const fetchPromiseAdd = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
     method: "GET"
   });
@@ -195,6 +173,14 @@
       renderComments();
     });
   });
+      response.json().then((responseData) => {
+        comments = responseData.comments;
+        renderComments();
+      });
+    });
+    renderComments();
+
+ 
     nameInputElement.value = ''
     commentInputElement.value = ''
 
@@ -210,11 +196,11 @@
       likeButton.addEventListener('click', (event) => {
         event.stopPropagation();
         const index = likeButton.dataset.index;
-        if (comments[index].likeButton == '-active-like') {
-          comments[index].likeButton = '';
+        if (comments[index].isLiked == '-active-like') {
+          comments[index].isLiked = '';
           comments[index].likes--;
         } else {
-          comments[index].likeButton = '-active-like';
+          comments[index].isLiked = '-active-like';
           comments[index].likes++;
         }
         renderComments();
