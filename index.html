@@ -42,7 +42,7 @@
             <button class="like-button -active-like"></button>
           </div>
         </div>
-      </li> -->
+      </li>
     </ul>
     <div class="add-form">
       <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" />
@@ -56,8 +56,7 @@
 </body>
 
 <script>
-// задание 2.11 DOM 3. Всплытие событий. Ограничения innerHtml
-
+//  2.12 API 1. GET, POST, DELETE
   // обьявление переменных
 
   const listElement = document.getElementById('list');
@@ -65,54 +64,61 @@
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
 
+  // массив Comments, рендерится через API
+  let comments = [];
 
-
-  // массив для рендера
-
-  const comments = [
-    {
-      name: "Глеб Фокин",
-      date: '12.02.22 12:18',
-      text: 'Это будет первый комментарий на этой странице',
-      likeCounter: '3',
-      likeButton: '',
-    },
-    {
-      name: 'Варвара Н.',
-      date: '13.02.22 19:22',
-      text: 'Мне нравится как оформлена эта страница! ❤',
-      likeCounter: '75',
-      likeButton: '-active-like',
-    }
-  ];
-  // рендер комментов на основе массива
-
+  // Рендер комментов на основе массива
   const renderComments = () => {
     const commentsHtml = comments.map((comment, index) => {
       return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
       <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class="likes">
-            <span class="likes-counter" >${comments[index].likeCounter}</span>
-            <button class="like-button ${comments[index].likeButton}" data-index="${index}"></button>
+            <span class="likes-counter" >${comments[index].likes}</span>
+            <button class="like-button ${comments[index].isLiked}" data-index="${index}"></button>
           </div></div></li>`
 
     }).join('')
     listElement.innerHTML = commentsHtml;
     initReplyListeners();
     initLikeButtonOnOff();
-
   }
-// очистка кода , доработал функцию вызова проверки кода на теги
- 
-function sanitizeHtml(htmlString = "") { 
-  return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;"); 
-} 
-sanitizeHtml();
-  //  валидация значений при вводе
 
+  // Берем данные из массива с помощью GET и загружаем на сервер
+  const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+    method: "GET"
+  });
+
+  // Подписываемся на успешное завершение запроса с помощью then
+  fetchPromise.then((response) => {
+    // Запускаем преобразовываем "сырые" данные от API в json формат
+    const jsonPromise = response;
+    // Подписываемся на результат преобразования
+    jsonPromise.json().then((responseData) => {
+      // приведение к нужному формату данных
+      const formatComments = responseData.comments.map((comment) => {
+        return {
+          name: comment.author.name,
+          text: comment.text,
+          date: new Date().toLocaleString().slice(0, -3),
+          likes: comment.likes,
+          isLiked: false,
+        };
+      })
+      console.log(formatComments);
+      // получили данные и рендерим их в приложении
+      comments = formatComments;
+      renderComments();
+    });
+  });
+
+  // Очистка кода , доработал функцию вызова проверки кода на теги
+
+  function sanitizeHtml(htmlString = "") {
+    return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+  sanitizeHtml();
+
+  //  Валидация значений при вводе
   buttonElement.addEventListener('click', () => {
-
-    const date = new Date();
-    const result2 = new Date().toLocaleString().slice(0, -3);
 
     nameInputElement.classList.remove('error')
     commentInputElement.classList.remove('error')
@@ -128,28 +134,53 @@ sanitizeHtml();
       return
     }
 
-    // пуш в массив для нового коммента
+    // добавление нового комментария и загрузка в сервер API
+    fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: nameInputElement.value,
+        text: commentInputElement.value,
+      })
+    }).then((response) => {
+      // GET нового массива комментов после добавления нового
+      const fetchPromiseAdd = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+        method: "GET"
+      });
 
-    comments.push({
-      name: nameInputElement.value
-        .replaceAll("&", "&amp;")
-        .replaceAll('"', "&quot;"),
-      text: commentInputElement.value
-        .replaceAll("&", "&amp;")
-        .replaceAll('"', "&quot;"),
-      date: result2,
-      likeCounter: 0,
-      likeButton: '',
+      // подписываемся на успешное завершение запроса с помощью then
+      fetchPromiseAdd.then((response) => {
+        // Запускаем преобразовываем "сырые" данные от API в json формат
+        const jsonPromise = response;
+        // Подписываемся на результат преобразования
+        jsonPromise.json().then((responseData) => {
+          // приведение к нужному формату данных
+          const formatComments = responseData.comments.map((comment) => {
+            return {
+              name: comment.author.name,
+              text: comment.text,
+              date: new Date().toLocaleString().slice(0, -3),
+              likes: comment.likes,
+              isLiked: false,
+            };
+          })
+          console.log(formatComments);
+          // получили данные и рендерим их в приложении
+          comments = formatComments;
+          renderComments();
+        });
+      });
+      response.json().then((responseData) => {
+        comments = responseData.comments;
+        renderComments();
+      });
     });
-
-
+    renderComments();
 
     nameInputElement.value = ''
     commentInputElement.value = ''
 
     initLikeButtonOnOff();
     renderComments();
-
   });
   // кнопка для лайка, с ветвлением при нажатии
 
@@ -157,21 +188,19 @@ sanitizeHtml();
     const likeButtonElements = document.querySelectorAll('.like-button');
     for (const likeButton of likeButtonElements) {
       likeButton.addEventListener('click', (event) => {
-        event.stopPropagation(); 
+        event.stopPropagation();
         const index = likeButton.dataset.index;
-        console.log(index);
-        if (comments[index].likeButton == '-active-like') {
-          comments[index].likeButton = '';
-          comments[index].likeCounter--;
+        if (comments[index].isLiked == '-active-like') {
+          comments[index].isLiked = '';
+          comments[index].likes--;
         } else {
-          comments[index].likeButton = '-active-like';
-          comments[index].likeCounter++;
+          comments[index].isLiked = '-active-like';
+          comments[index].likes++;
         }
         renderComments();
       })
     }
   }
-
 
   // клик по комментарию добавляется в поле ввода: цитирование
 
@@ -180,10 +209,10 @@ sanitizeHtml();
       for (const replyClick of replyClicks) {
         replyClick.addEventListener('click', () => {
           const index = replyClick.dataset.index;
-          commentInputElement.value = 
-          `>${comments[index].text} 
-           
-${comments[index].name},`;
+          commentInputElement.value =
+            `>${comments[index].text} 
+
+   ${comments[index].name},`;
         });
       }
     }
@@ -192,9 +221,7 @@ ${comments[index].name},`;
   initLikeButtonOnOff();
   renderComments();
 
-
   console.log("It works!");
-
 
 </script>
 
