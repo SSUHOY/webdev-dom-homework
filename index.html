@@ -56,7 +56,8 @@
 </body>
 
 <script>
-// 2.13 API 2. Цепочки промисов
+  // 2.13 API 2. Цепочки промисов
+
   // обьявление переменных
 
   const listElement = document.getElementById('list');
@@ -83,14 +84,14 @@
   }
 
   // Берем данные из массива с помощью GET и загружаем на сервер
-    // Подписываемся на успешное завершение запроса с помощью then, обьявление промиса с методом 'GET' через функцию
+  // Подписываемся на успешное завершение запроса с помощью then, обьявление промиса с методом 'GET' через функцию
   const fetchRenderComments = () => {
-   return fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
-    method: "GET"
-  }).then((response) => {
-    return response.json();
-  }).then((responseData) => {
-    const formatComments = responseData.comments.map((comment) => {
+    return fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+      method: "GET"
+    }).then((response) => {
+      return response.json();
+    }).then((responseData) => {
+      const formatComments = responseData.comments.map((comment) => {
         return {
           name: comment.author.name,
           text: comment.text,
@@ -103,8 +104,8 @@
       // получили данные и рендерим их в приложении
       comments = formatComments;
       renderComments();
-  })
-  } 
+    })
+  }
   fetchRenderComments();
 
   // Очистка кода , доработал функцию вызова проверки кода на теги
@@ -131,24 +132,40 @@
       return
     }
 
+    // отключение кнопки до завершения публикации нового коммента и замена содержимого контента на "Выполняется..."
+    // buttonElement.disabled = true;
+    // buttonElement.textContent = 'Выполняется...'
+
     // добавление нового комментария и загрузка в сервер API
-    fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: nameInputElement.value,
-        text: commentInputElement.value,
+
+    const addComment = () => {
+      fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: nameInputElement.value,
+          text: commentInputElement.value,
+        })
+      }).then(() => {
+        // функция рендера комментов (промис с методом "GET")
+        return fetchRenderComments();
       })
-    }).then((response) => {
-     fetchRenderComments();
-    });
-    renderComments();
+        .then(() => {
+          // возврат кнопки в нормальное состояние после публикации нового комментария
+          // buttonElement.disabled = false;
+          // buttonElement.textContent = 'Написать'
+        })
+      renderComments();
 
-    nameInputElement.value = ''
-    commentInputElement.value = ''
+      nameInputElement.value = ''
+      commentInputElement.value = ''
 
-    initLikeButtonOnOff();
-    renderComments();
+      initLikeButtonOnOff();
+      renderComments();
+    }
+    addComment();
   });
+
+
   // кнопка для лайка, с ветвлением при нажатии
 
   const initLikeButtonOnOff = () => {
