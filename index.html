@@ -133,8 +133,8 @@
     }
 
     // отключение кнопки до завершения публикации нового коммента и замена содержимого контента на "Выполняется..."
-    // buttonElement.disabled = true;
-    // buttonElement.textContent = 'Выполняется...'
+    buttonElement.disabled = true;
+    buttonElement.textContent = 'Выполняется...'
 
     // добавление нового комментария и загрузка в сервер API
 
@@ -151,8 +151,8 @@
       })
         .then(() => {
           // возврат кнопки в нормальное состояние после публикации нового комментария
-          // buttonElement.disabled = false;
-          // buttonElement.textContent = 'Написать'
+          buttonElement.disabled = false;
+          buttonElement.textContent = 'Написать'
         })
       renderComments();
 
