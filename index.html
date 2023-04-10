@@ -144,17 +144,26 @@
         body: JSON.stringify({
           name: nameInputElement.value,
           text: commentInputElement.value,
-        })
-      }).then(() => {
-        // функция рендера комментов (промис с методом "GET")
-        return fetchRenderComments();
+        }),
       })
-        .then(() => {
-          // возврат кнопки в нормальное состояние после публикации нового комментария
-          buttonElement.disabled = false;
-          buttonElement.textContent = 'Написать'
+        .then((response) => {
+          return response;
         })
-      renderComments();
+        .then((response) => {
+          return response.json();
+        })
+        .then((response) => {
+          return response;
+        })
+        .then(() => {
+          return fetchRenderComments();
+        })
+        .then(() => {
+          buttonElement.disabled = false;
+          buttonElement.textContent = 'Добавить'
+        });
+        renderComments();
+
 
       nameInputElement.value = ''
       commentInputElement.value = ''
