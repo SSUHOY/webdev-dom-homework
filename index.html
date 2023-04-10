@@ -83,18 +83,14 @@
   }
 
   // Берем данные из массива с помощью GET и загружаем на сервер
-  const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+    // Подписываемся на успешное завершение запроса с помощью then, обьявление промиса с методом 'GET' через функцию
+  const fetchRenderComments = () => {
+   return fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
     method: "GET"
-  });
-
-  // Подписываемся на успешное завершение запроса с помощью then
-  fetchPromise.then((response) => {
-    // Запускаем преобразовываем "сырые" данные от API в json формат
-    const jsonPromise = response;
-    // Подписываемся на результат преобразования
-    jsonPromise.json().then((responseData) => {
-      // приведение к нужному формату данных
-      const formatComments = responseData.comments.map((comment) => {
+  }).then((response) => {
+    return response.json();
+  }).then((responseData) => {
+    const formatComments = responseData.comments.map((comment) => {
         return {
           name: comment.author.name,
           text: comment.text,
@@ -107,8 +103,32 @@
       // получили данные и рендерим их в приложении
       comments = formatComments;
       renderComments();
-    });
-  });
+  })
+  } 
+  fetchRenderComments();
+// Берем данные из массива с помощью GET и загружаем на сервер
+  // Подписываемся на успешное завершение запроса с помощью then
+  // fetchPromise.then((response) => {
+  //   // Запускаем преобразовываем "сырые" данные от API в json формат
+  //   const jsonPromise = response;
+  //   // Подписываемся на результат преобразования
+  //   jsonPromise.json().then((responseData) => {
+  //     // приведение к нужному формату данных
+  //     const formatComments = responseData.comments.map((comment) => {
+  //       return {
+  //         name: comment.author.name,
+  //         text: comment.text,
+  //         date: new Date().toLocaleString().slice(0, -3),
+  //         likes: comment.likes,
+  //         isLiked: false,
+  //       };
+  //     })
+  //     console.log(formatComments);
+  //     // получили данные и рендерим их в приложении
+  //     comments = formatComments;
+  //     renderComments();
+  //   });
+  // });
 
   // Очистка кода , доработал функцию вызова проверки кода на теги
 
