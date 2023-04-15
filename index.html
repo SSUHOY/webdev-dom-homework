@@ -145,13 +145,24 @@
           name: nameInputElement.value,
           text: commentInputElement.value,
         }),
+      }).then((response) => {
+
+        // Ветвление с выбрасыванием ошибки в случае отключенного интернета
+        console.log(response);
+        if (response.status === 500) {
+          throw new Error('сервер сломался')
+        } else {
+          return response
+        }
+        // ПОПЫТКА СОЗДАТЬ ВЕТВЛЕНИЕ НА ПРОВЕРКУ КОЛИЧЕСТВА СИМВОЛОВ ПРИ ВВОДЕ - ДОРАБОТАТЬ
+        // console.log(response);
+        // console.log(comments.name.length);
+        // if (comments.name.length <= 3) {
+        //   throw new Error('Некорректные данные')
+        // } else {
+        //   return response;
+        // }
       })
-        .then((response) => {
-          return response;
-        })
-        .then((response) => {
-          return response.json();
-        })
         .then((response) => {
           return response;
         })
@@ -161,12 +172,24 @@
         .then(() => {
           buttonElement.disabled = false;
           buttonElement.textContent = 'Добавить'
-        });
-        renderComments();
+          nameInputElement.value = ''
+          commentInputElement.value = ''
+        }).catch((error) => {
+
+          // Алерт с ошибкой, в случае, если интернет не функционирует - РАБОТАЕТ
+
+          alert('Проблема с интернетом')
+          if (error === 'Сервер сломался') {
+            return addComment();
+          }
+          buttonElement.disabled = false;
+          buttonElement.textContent = 'Добавить'
+
+        })
+      renderComments();
 
 
-      nameInputElement.value = ''
-      commentInputElement.value = ''
+
 
       initLikeButtonOnOff();
       renderComments();
