@@ -148,29 +148,13 @@
       }).then((response) => {
 
         // Ветвление с выбрасыванием ошибки в случае отключенного интернета
-        console.log(response);
         if (response.status === 500) {
           throw new Error('Сервер сломался')
+          // ошибка при вводе коротких данных, менее 3 символов в поле имя и в поле комменты
+        } else if (response.status === 400) {
+          throw new Error('Слишком короткое значение, поле имя и комментарий должно содержать хотя бы 3 символа')
         } else {
-          return response
-        }
-        // ПОПЫТКА СОЗДАТЬ ВЕТВЛЕНИЕ НА ПРОВЕРКУ КОЛИЧЕСТВА СИМВОЛОВ ПРИ ВВОДЕ - ДОРАБОТАТЬ
-        // console.log(response);
-        // console.log(comments.name.length);
-        // if (comments.name.length <= 3) {
-        //   throw new Error('Некорректные данные')
-        // } else {
-        //   return response;
-        // }
-      }).then((response) => {
-        console.log(commentInputElement.value.length);
-        console.log(nameInputElement.value.length);
-        if (commentInputElement.value.length <= 3) {
-          throw new Error('Слишком короткое значение в поле комментария')
-        } if (nameInputElement.value.length <= 3) {
-          throw new Error('Слишком короткое значение в поле имени')
-        } else {
-          return response
+          return response.json();
         }
       })
         .then(() => {
@@ -182,24 +166,19 @@
           nameInputElement.value = ''
           commentInputElement.value = ''
         }).catch((error) => {
-console.log(error);
+          console.log(error);
           // Алерт с ошибкой, в случае, если интернет не функционирует - РАБОТАЕТ
+          if (error.message === 'Сервер сломался') {
+           alert('Кажется что-то пошло не так, проверьте интернет соединение');
+          } else if (error.message === "Слишком короткое значение, поле имя и комментарий должно содержать хотя бы 3 символа") {
+            alert('Минимальное количество символов в полях ввода - 3')
+          }
 
-          alert('Проблема с интернетом')
-          if (error === 'Сервер сломался') {
-            alert('Проблема с интернетом')
-        } else if (error === 'Слишком короткое значение в поле комментария' || error === 'Слишком короткое значение в поле имени') {
-          alert('Минимальное количество символов в поле ИМЯ и КОММЕНТАРИЙ - 3')
-        } 
           buttonElement.disabled = false;
           buttonElement.textContent = 'Добавить'
 
         })
       renderComments();
-
-
-
-
       initLikeButtonOnOff();
       renderComments();
     }
