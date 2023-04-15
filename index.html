@@ -56,7 +56,7 @@
 </body>
 
 <script>
-  // 2.13 API 2. Цепочки промисов
+  // 2.14 API 3. Обработка ошибок
 
   // обьявление переменных
 
@@ -64,6 +64,7 @@
   const buttonElement = document.getElementById('buttonElement')
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
+  const containerElement = document.querySelector('.container');
 
   // массив Comments, рендерится через API
   let comments = [];
@@ -86,7 +87,10 @@
   // Берем данные из массива с помощью GET и загружаем на сервер
   // Подписываемся на успешное завершение запроса с помощью then, обьявление промиса с методом 'GET' через функцию
   const fetchRenderComments = () => {
-    return fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+    if (comments.length === 0) {
+      containerElement.insertAdjacentHTML("afterbegin", "<span>Подождите, список загружается...</span>")
+    }
+    fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
       method: "GET"
     }).then((response) => {
       return response.json();
@@ -104,6 +108,8 @@
       // получили данные и рендерим их в приложении
       comments = formatComments;
       renderComments();
+      const span = containerElement.querySelector("span");
+      span.remove();
     })
   }
   fetchRenderComments();
