@@ -1,4 +1,4 @@
-// // Импорт из модулей
+// // ИМПОРТ ИЗ МОДУЛЕЙ
 import { fetchRenderComments } from "./api.js";
 import { renderComments } from "./renderModule.js";
 import { sanitizeHtml } from "./sanitizeHtml.js";
@@ -16,7 +16,6 @@ const commentInputElement = document.getElementById('comment-input')
 
 // массив Comments, рендерится через API
 let comments = [];
-
 // Рендер комментов на основе массива
 // const renderComments = () => {
 //   const commentsHtml = comments.map((comment, index) => {
@@ -31,16 +30,9 @@ let comments = [];
 //   initReplyListeners();
 //   initLikeButtonOnOff();
 // }
+
+// РЕНДЕР КОММЕНТОВ ИЗ МОДУЛЯ
 renderComments(comments)
-
-// Функция при загрузке комментов показывать строку
-
-// function loadingCommentsList() {
-//   if (comments.length === 0) {
-//     containerElement.insertAdjacentHTML("afterbegin", "<span>Подождите, список загружается...</span>")
-//   }
-// }
-
 
 // Берем данные из массива с помощью GET и загружаем на сервер
 // Подписываемся на успешное завершение запроса с помощью then, обьявление промиса с методом 'GET' через функцию
@@ -69,16 +61,15 @@ renderComments(comments)
 //     span.remove();
 //   })
 // }
+
+// FETCH ЗАПРОС В API GET ИЗ МОДУЛЯ
+
 fetchRenderComments(comments, loadingCommentsList);
 
-// Очистка кода , доработал функцию вызова проверки кода на теги
-
-// function sanitizeHtml(htmlString = "") {
-//   return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-// }
+// ОЧИСТКА КОДА CALLBACK ИЗ МОДУЛЯ
 sanitizeHtml();
 
-//  Валидация значений при вводе
+//  Валидация значений при вводе, кнопка добавления комментария
 buttonElement.addEventListener('click', () => {
 
   nameInputElement.classList.remove('error')
@@ -151,6 +142,9 @@ buttonElement.addEventListener('click', () => {
   //   initLikeButtonOnOff()
   //   renderComments();
   // }
+
+  // РЕНДЕР КОММЕНТОВ И ДОБАВЛЕНИЕ КОММЕНТАРИЯ, ОТРАБОТКА МЕТОДА POST ИЗ FETCH, CALLBACK ИЗ МОДУЛЯ
+
   fetchRenderComments(comments)
   renderComments(comments);
   addComment(comments);
@@ -191,6 +185,9 @@ buttonElement.addEventListener('click', () => {
 //     }
 //   }
 // }
+
+
+// CALLBACK ВСЕХ ФУНКЦИЙ КОДА И ФОРМЫ КОМЕНТАРИЯ ИЗ МОДУЛЯ
 initReplyListeners(comments);
 initLikeButtonOnOff(comments);
 renderComments(comments);

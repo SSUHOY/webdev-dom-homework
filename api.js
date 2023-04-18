@@ -1,3 +1,4 @@
+// ИМПОРТ МОДУЛЕЙ
 import { renderComments } from "./renderModule.js";
 import { loadingCommentsList } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
@@ -34,6 +35,7 @@ const fetchRenderComments = (comments) => {
     })
 }
 
+// POST КОММЕНТАРИЕВ
 const addComment = (comments) => {
     fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
         method: 'POST',
@@ -85,5 +87,7 @@ const addComment = (comments) => {
     renderComments(comments);
 }
 
+
+// ЭКСПОРТ ФУНКЦИЙ ИЗ МОДУЛЯ
 export { addComment }
 export { fetchRenderComments }

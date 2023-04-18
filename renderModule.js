@@ -1,5 +1,7 @@
 import { sanitizeHtml } from "./sanitizeHtml.js";
 
+// ОБЬЯВЛЕНИЕ НЕОБХОДИМЫХ ПЕРЕМЕННЫХ
+
 const listElement = document.getElementById('list');
 const containerElement = document.querySelector('.container');
 const commentInputElement = document.getElementById('comment-input')
@@ -63,7 +65,7 @@ const renderComments = (comments) => {
 
 
 
-
+// ЭКСПОРТ ФУНКЦИЙ ИЗ МОДУЛЯ
 export { renderComments };
 export { initLikeButtonOnOff }
 export { initReplyListeners }
