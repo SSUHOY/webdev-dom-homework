@@ -82,9 +82,9 @@ const addComment = (comments) => {
             buttonElement.textContent = 'Добавить'
 
         })
-    renderComments(comments);
+    
     initLikeButtonOnOff(comments)
-    renderComments(comments);
+    
 }
 
 

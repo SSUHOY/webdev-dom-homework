@@ -64,7 +64,7 @@ renderComments(comments)
 
 // FETCH ЗАПРОС В API GET ИЗ МОДУЛЯ
 
-fetchRenderComments(comments, loadingCommentsList);
+fetchRenderComments(comments);
 
 // ОЧИСТКА КОДА CALLBACK ИЗ МОДУЛЯ
 sanitizeHtml();
@@ -145,51 +145,14 @@ buttonElement.addEventListener('click', () => {
 
   // РЕНДЕР КОММЕНТОВ И ДОБАВЛЕНИЕ КОММЕНТАРИЯ, ОТРАБОТКА МЕТОДА POST ИЗ FETCH, CALLBACK ИЗ МОДУЛЯ
 
-  fetchRenderComments(comments)
-  renderComments(comments);
   addComment(comments);
 });
 
-
-// кнопка для лайка, с ветвлением при нажатии
-
-// const initLikeButtonOnOff = () => {
-//   const likeButtonElements = document.querySelectorAll('.like-button');
-//   for (const likeButton of likeButtonElements) {
-//     likeButton.addEventListener('click', (event) => {
-//       event.stopPropagation();
-//       const index = likeButton.dataset.index;
-//       if (comments[index].isLiked === '-active-like') {
-//         comments[index].isLiked = '';
-//         comments[index].likes--;
-//       } else {
-//         comments[index].isLiked = '-active-like';
-//         comments[index].likes++;
-//       }
-//       renderComments();
-//     })
-//   }
-// }
-
-// клик по комментарию добавляется в поле ввода: цитирование
-
-// const initReplyListeners = () => {
-//   const replyClicks = document.querySelectorAll('.comment'); {
-//     for (const replyClick of replyClicks) {
-//       replyClick.addEventListener('click', () => {
-//         const index = replyClick.dataset.index;
-//         commentInputElement.value =
-//           `>${comments[index].text} 
-//  ${comments[index].name},`;
-//       });
-//     }
-//   }
-// }
 
 
 // CALLBACK ВСЕХ ФУНКЦИЙ КОДА И ФОРМЫ КОМЕНТАРИЯ ИЗ МОДУЛЯ
 initReplyListeners(comments);
 initLikeButtonOnOff(comments);
-renderComments(comments);
+// renderComments(comments);
 
 console.log("It works!");
