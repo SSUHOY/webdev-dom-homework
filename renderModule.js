@@ -49,6 +49,7 @@ const initReplyListeners = (comments) => {
 
 // Рендер комментов на основе массива
 const renderComments = (comments) => {
+    const appEl = document.getElementById('app');
     const commentsHtml = comments.map((comment, index) => {
         return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
       <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class="likes">
@@ -56,8 +57,37 @@ const renderComments = (comments) => {
             <button class="like-button ${comments[index].isLiked}" data-index="${index}"></button>
           </div></div></li>`
 
-    }).join('')
-    listElement.innerHTML = commentsHtml;
+    }).join('');
+    const appHtml = `
+    
+    <div class="form">
+    <h3 class="form-title">Форма входа</h3>
+    <div class="form-row">
+        Логин
+        <input type="text" id="login-input" class="input" />
+        <br />
+        Пароль
+        <input type="text" id="login-input" class="input" />
+    </div>
+    <br />
+    <button class="button" id="login-button">Войти</button>
+    </div>
+
+  <div class="container">
+  ${commentsHtml}
+    <ul class="comments" id="list">
+
+    </ul>
+    <div class="add-form">
+      <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" />
+      <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"
+        id="text-input" ></textarea>
+      <div class="add-form-row">
+        <button class="add-form-button turn-off" id="add-button">Написать</button>
+      </div>
+
+    </div>`
+    appEl.innerHTML = appHtml;
     initReplyListeners(comments);
     initLikeButtonOnOff(comments);
 }

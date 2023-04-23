@@ -1,4 +1,5 @@
 import { addComment } from "./api.js";
+import { renderComments } from "./renderModule.js";
 
 const buttonElement = document.getElementById('buttonElement')
 const nameInputElement = document.getElementById('name-input')

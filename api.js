@@ -3,26 +3,33 @@ import { renderComments } from "./renderModule.js";
 import { loadingCommentsList } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
 
-const containerElement = document.querySelector('.container');
+const containerElement = document.querySelector('.app');
 const nameInputElement = document.getElementById('name-input')
 const commentInputElement = document.getElementById('comment-input')
 
+const host = "https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments"
+
+const token = '64253950ca1ce2a815a327cf';
 
 // GET комментариев
 
 const fetchRenderComments = (comments) => {
     loadingCommentsList(comments);
-    fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
-        method: "GET"
+    fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
+        method: "GET",
+        headers: {
+            Authorization: token,
+        },       
     }).then((response) => {
         return response.json();
     }).then((responseData) => {
         const formatComments = responseData.comments.map((comment) => {
             return {
                 name: comment.author.name,
+                login: comment.author.login,
                 text: comment.text,
                 date: new Date().toLocaleString().slice(0, -3),
-                likes: comment.likes,
+                likes: comment.likes - 1,
                 isLiked: false,
             };
         })
@@ -37,13 +44,17 @@ const fetchRenderComments = (comments) => {
 
 // POST КОММЕНТАРИЕВ
 const addComment = (comments) => {
-    fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
+    fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
         method: 'POST',
+        headers: {
+            Authorization: token,
+        },
         body: JSON.stringify({
             name: nameInputElement.value,
             text: commentInputElement.value,
-        }),
-    }).then((response) => {
+        }),          
+    })
+    .then((response) => {
 
         // Ветвление с выбрасыванием ошибки в случае отключенного интернета
         if (response.status === 500) {
@@ -82,9 +93,7 @@ const addComment = (comments) => {
             buttonElement.textContent = 'Добавить'
 
         })
-    
     initLikeButtonOnOff(comments)
-    
 }
 
 

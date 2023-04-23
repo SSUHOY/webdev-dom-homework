@@ -1,5 +1,6 @@
 // План
-// 1. Реализовать форму логина в приложении
+// 1. Подключить новый API с функционалом авторизации (+)
+// 2. Реализовать форму логина в приложении
 
 
 
@@ -32,7 +33,5 @@ validateFn(comments);
 // CALLBACK ВСЕХ ФУНКЦИЙ КОДА И ФОРМЫ КОМЕНТАРИЯ ИЗ МОДУЛЯ
 initReplyListeners(comments);
 initLikeButtonOnOff(comments);
-
-
 
 console.log("It works!");
