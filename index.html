@@ -56,7 +56,7 @@
 </body>
 
 <script>
-  // 2.13 API 2. Цепочки промисов
+  // 2.14 API 3. Обработка ошибок
 
   // обьявление переменных
 
@@ -64,6 +64,7 @@
   const buttonElement = document.getElementById('buttonElement')
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
+  const containerElement = document.querySelector('.container');
 
   // массив Comments, рендерится через API
   let comments = [];
@@ -86,7 +87,10 @@
   // Берем данные из массива с помощью GET и загружаем на сервер
   // Подписываемся на успешное завершение запроса с помощью then, обьявление промиса с методом 'GET' через функцию
   const fetchRenderComments = () => {
-    return fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+    if (comments.length === 0) {
+      containerElement.insertAdjacentHTML("afterbegin", "<span>Подождите, список загружается...</span>")
+    }
+    fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
       method: "GET"
     }).then((response) => {
       return response.json();
@@ -104,6 +108,8 @@
       // получили данные и рендерим их в приложении
       comments = formatComments;
       renderComments();
+      const span = containerElement.querySelector("span");
+      span.remove();
     })
   }
   fetchRenderComments();
@@ -145,29 +151,46 @@
           name: nameInputElement.value,
           text: commentInputElement.value,
         }),
-      })
-        .then((response) => {
-          return response;
-        })
-        .then((response) => {
+      }).then((response) => {
+
+        // Ветвление с выбрасыванием ошибки в случае отключенного интернета
+        if (response.status === 500) {
+          throw new Error('Сервер сломался')
+          // ошибка при вводе коротких данных, менее 3 символов в поле имя и в поле комменты
+        } else if (response.status === 400) {
+          throw new Error('Слишком короткое значение, поле имя и комментарий должно содержать хотя бы 3 символа')
+        } else {
           return response.json();
-        })
-        .then((response) => {
-          return response;
-        })
+        }
+      })
         .then(() => {
+          // GET через вызов функции
           return fetchRenderComments();
         })
         .then(() => {
+          // Отработка функционала кнопки и полей после публикации комментария
           buttonElement.disabled = false;
           buttonElement.textContent = 'Добавить'
-        });
-        renderComments();
+          nameInputElement.value = ''
+          commentInputElement.value = ''
+        }).catch((error) => {
+          console.log(error);
+          // Alert с ошибкой, в случае, если интернет не функционирует - РАБОТАЕТ
+          if (error.message === 'Failed to fetch') {
+            alert('Кажется что-то пошло не так, проверьте интернет соединение');
+            //  Alert с ошибкой, в случае, если выпала ошибка 500 
+          } else if (error === 'Сервер сломался') {
+            alert('Кажется что-то пошло не так...');
+            // Alert с ошибкой, в случае введения в полях имени и коммента менее 3 символов
+          } else if (error.message === "Слишком короткое значение, поле имя и комментарий должно содержать хотя бы 3 символа") {
+            alert('Минимальное количество символов в полях ввода не менее трех')
+          }
+          // user exp: возврат активной кнопки после публикации коммента 
+          buttonElement.disabled = false;
+          buttonElement.textContent = 'Добавить'
 
-
-      nameInputElement.value = ''
-      commentInputElement.value = ''
-
+        })
+      renderComments();
       initLikeButtonOnOff();
       renderComments();
     }
