@@ -12,6 +12,7 @@ import { sanitizeHtml } from "./sanitizeHtml.js";
 import { initReplyListeners } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
 import { validateFn } from "./validate.js";
+import { loadingCommentsList } from "./renderModule.js";
 
 // Переменные
 // const listElement = document.getElementById('list');
@@ -22,6 +23,7 @@ import { validateFn } from "./validate.js";
 // массив Comments, рендерится через API
 let comments = [];
 let token = ''
+
 // РЕНДЕР КОММЕНТОВ ИЗ МОДУЛЯ
 renderComments(comments)
 // FETCH ЗАПРОС В API GET ИЗ МОДУЛЯ

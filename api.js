@@ -3,7 +3,7 @@ import { renderComments } from "./renderModule.js";
 import { loadingCommentsList } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
 
-const containerElement = document.querySelector('.app');
+const containerElement = document.querySelector('.container');
 const nameInputElement = document.getElementById('name-input')
 const commentInputElement = document.getElementById('comment-input')
 
