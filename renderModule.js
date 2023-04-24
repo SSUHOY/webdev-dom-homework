@@ -1,17 +1,65 @@
 import { sanitizeHtml } from "./sanitizeHtml.js";
+import { validateFn } from "./validate.js";
 
-// ОБЬЯВЛЕНИЕ НЕОБХОДИМЫХ ПЕРЕМЕННЫХ
 
-const listElement = document.getElementById('list');
-const containerElement = document.querySelector('.container');
+// const containerElement = document.querySelector('.container');
 const commentInputElement = document.getElementById('comment-input')
 
 // Строка загрузки комментов
 function loadingCommentsList(comments) {
+    const containerElement = document.querySelector('.container');
     if (comments.length === 0) {
         containerElement.insertAdjacentHTML("afterbegin", "<span>Подождите, список загружается...</span>")
     }
 }
+
+const renderComments = (comments) => {
+
+    const appEl = document.getElementById('app');
+    const commentsHtml = comments.map((comment, index) => {
+        return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
+      <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class="likes">
+            <span class="likes-counter" >${comments[index].likes}</span>
+            <button class="like-button ${comments[index].isLiked}" data-index="${index}"></button>
+          </div></div></li>`
+
+    }).join('')
+    const appHtml = `
+    <div class="form">
+    <h3 class="form-title">Форма входа</h3>
+        <div class="form-row">
+        Логин
+        <input type="text" id="login-input" class="input">
+        <br>
+        Пароль
+        <input type="password" id="password-input" class="input">
+        </div>
+        <br>
+        <button class="button" id='login-button'>Войти</button>
+        </div>    
+        <div class="container">
+    ${commentsHtml}
+    
+        <ul class="comments" id="list">
+        <!-- Список рендерится из JS -->
+        </ul>
+        <div class="add-form">
+        <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" />
+        <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"
+            id="comment-input"></textarea>
+        <div class="add-form-row">
+            <button class="add-form-button" id="buttonElement">Написать</button>
+        </div>
+    `
+    appEl.innerHTML = appHtml;
+
+    initReplyListeners(comments);
+    initLikeButtonOnOff(comments);
+    validateFn()
+
+}
+
+
 
 
 // // кнопка для лайка, с ветвлением при нажатии
@@ -46,21 +94,6 @@ const initReplyListeners = (comments) => {
     }
 }
 
-
-// Рендер комментов на основе массива
-const renderComments = (comments) => {
-    const commentsHtml = comments.map((comment, index) => {
-        return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
-      <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class="likes">
-            <span class="likes-counter" >${comments[index].likes}</span>
-            <button class="like-button ${comments[index].isLiked}" data-index="${index}"></button>
-          </div></div></li>`
-
-    }).join('')
-    listElement.innerHTML = commentsHtml;
-    initReplyListeners(comments);
-    initLikeButtonOnOff(comments);
-}
 
 
 

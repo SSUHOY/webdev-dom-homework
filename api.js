@@ -3,17 +3,15 @@ import { renderComments } from "./renderModule.js";
 import { loadingCommentsList } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
 
-const containerElement = document.querySelector('.container');
-const nameInputElement = document.getElementById('name-input')
-const commentInputElement = document.getElementById('comment-input')
 
-const host = "https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments"
+// const host = "https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments"
 
 const token = '64253950ca1ce2a815a327cf';
 
 // GET комментариев
 
 const fetchRenderComments = (comments) => {
+    const containerElement = document.querySelector('.container');
     loadingCommentsList(comments);
     fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
         method: "GET",
@@ -44,6 +42,8 @@ const fetchRenderComments = (comments) => {
 
 // POST КОММЕНТАРИЕВ
 const addComment = (comments) => {
+const nameInputElement = document.getElementById('name-input')
+const commentInputElement = document.getElementById('comment-input')
     fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
         method: 'POST',
         headers: {
