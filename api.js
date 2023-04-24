@@ -2,11 +2,8 @@
 import { renderComments } from "./renderModule.js";
 import { loadingCommentsList } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
+import { token } from "./main.js";
 
-
-// const host = "https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments"
-
-const token = '64253950ca1ce2a815a327cf';
 
 // GET комментариев
 
@@ -27,7 +24,7 @@ const fetchRenderComments = (comments) => {
                 login: comment.author.login,
                 text: comment.text,
                 date: new Date().toLocaleString().slice(0, -3),
-                likes: comment.likes - 1,
+                likes: comment.likes,
                 isLiked: false,
             };
         })
@@ -77,7 +74,6 @@ const commentInputElement = document.getElementById('comment-input')
             nameInputElement.value = ''
             commentInputElement.value = ''
         }).catch((error) => {
-            console.log(error);
             // Alert с ошибкой, в случае, если интернет не функционирует - РАБОТАЕТ
             if (error.message === 'Failed to fetch') {
                 alert('Кажется что-то пошло не так, проверьте интернет соединение');
@@ -94,6 +90,7 @@ const commentInputElement = document.getElementById('comment-input')
 
         })
     initLikeButtonOnOff(comments)
+  
 }
 
 

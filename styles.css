@@ -143,3 +143,7 @@ body {
   .error {
     background-color: rgb(214, 94, 94);
   }
+  
+  .container {
+    gap:32px;
+  }

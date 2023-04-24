@@ -1,4 +1,5 @@
-import { addComment } from "./api.js";
+import { addComment, fetchRenderComments } from "./api.js";
+import { renderComments } from "./renderModule.js";
 
 
 export function validateFn(comments) {
@@ -29,7 +30,6 @@ export function validateFn(comments) {
         buttonElement.textContent = 'Выполняется...'
 
         addComment(comments);
-
     });
-    
+
 }
