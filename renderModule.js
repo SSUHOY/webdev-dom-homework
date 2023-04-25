@@ -2,11 +2,7 @@ import { sanitizeHtml } from "./sanitizeHtml.js";
 import { validateFn } from "./validate.js";
 import { fetchRenderComments } from "./api.js";
 
-const commentInputElement = document.getElementById('comment-input')
 
-// let token = 'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck';
-
-// token = null;
 
 // Строка загрузки комментов
 function loadingCommentsList(comments) {
@@ -71,8 +67,8 @@ const renderApp = (comments, token) => {
     `
     appEl.innerHTML = appHtml;
     // fetchRenderComments(comments)
-    initReplyListeners(comments);
-    initLikeButtonOnOff(comments);
+    initReplyListeners(comments, token);
+    initLikeButtonOnOff(comments, token);
     validateFn(comments, token)
 
 }
@@ -81,7 +77,7 @@ const renderApp = (comments, token) => {
 
 
 // // кнопка для лайка, с ветвлением при нажатии
-const initLikeButtonOnOff = (comments) => {
+const initLikeButtonOnOff = (comments, token) => {
     const likeButtonElements = document.querySelectorAll('.like-button');
     for (const likeButton of likeButtonElements) {
         likeButton.addEventListener('click', (event) => {
@@ -94,12 +90,13 @@ const initLikeButtonOnOff = (comments) => {
                 comments[index].isLiked = '-active-like';
                 comments[index].likes++;
             }
-            renderApp(comments);
+            renderApp(comments, token);
         })
     }
 }
 // Функция реплая 
-const initReplyListeners = (comments) => {
+const initReplyListeners = (comments, token) => {
+    const commentInputElement = document.getElementById('comment-input')
     const replyClicks = document.querySelectorAll('.comment'); {
         for (const replyClick of replyClicks) {
             replyClick.addEventListener('click', () => {

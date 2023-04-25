@@ -85,7 +85,7 @@ const commentInputElement = document.getElementById('comment-input')
             buttonElement.disabled = false;
             buttonElement.textContent = 'Добавить'
         })
-    initLikeButtonOnOff(comments)
+    initLikeButtonOnOff(comments, token)
  
 }
 
