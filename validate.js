@@ -2,7 +2,7 @@ import { addComment, fetchRenderComments } from "./api.js";
 import { renderComments } from "./renderModule.js";
 
 
-export function validateFn(comments) {
+export function validateFn(comments, token) {
 
     const buttonElement = document.getElementById('buttonElement');
     const nameInputElement = document.getElementById('name-input');
@@ -29,7 +29,7 @@ export function validateFn(comments) {
         buttonElement.disabled = true;
         buttonElement.textContent = 'Выполняется...'
 
-        addComment(comments);
+        addComment(comments, token);
     });
 
 }

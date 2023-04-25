@@ -4,9 +4,9 @@ import { fetchRenderComments } from "./api.js";
 
 const commentInputElement = document.getElementById('comment-input')
 
-let token = 'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck';
+// let token = 'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck';
 
-token = null;
+// token = null;
 
 // Строка загрузки комментов
 function loadingCommentsList(comments) {
@@ -16,7 +16,7 @@ function loadingCommentsList(comments) {
     }
 }
 
-const renderApp = (comments) => {
+const renderApp = (comments, token) => {
 
     const appEl = document.getElementById('app');
 
@@ -40,7 +40,7 @@ const renderApp = (comments) => {
 
         document.getElementById('login-button').addEventListener('click', () => {
             token = 'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck'
-            fetchRenderComments(comments)
+            fetchRenderComments(comments, token)
         })
 
         return;
@@ -73,7 +73,7 @@ const renderApp = (comments) => {
     // fetchRenderComments(comments)
     initReplyListeners(comments);
     initLikeButtonOnOff(comments);
-    validateFn()
+    validateFn(comments, token)
 
 }
 

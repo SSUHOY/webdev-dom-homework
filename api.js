@@ -1,18 +1,12 @@
 // ИМПОРТ МОДУЛЕЙ
-import { renderComments } from "./renderModule.js";
-import { loadingCommentsList } from "./renderModule.js";
+import { loadingCommentsList, renderComments } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
-// import { token } from "./main.js";
-
-let token = 'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck';
-
-// token = null;
 
 // GET комментариев
 
-const fetchRenderComments = (comments) => {
-    const containerElement = document.querySelector('.container');
+const fetchRenderComments = (comments, token) => {
     // loadingCommentsList(comments);
+    const containerElement = document.querySelector('.container');
     fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
         method: "GET",
         headers: {
@@ -34,14 +28,14 @@ const fetchRenderComments = (comments) => {
         // console.log(formatComments);
         // получили данные и рендерим их в приложении
         comments = formatComments;
-        renderComments(comments);
-        const span = containerElement.querySelector("span");
-        span.remove();
+        renderComments(comments, token);
+        // let span = containerElement.querySelector("span");
+        // span.remove();
     })
 }
 
 // POST КОММЕНТАРИЕВ
-const addComment = (comments) => {
+const addComment = (comments, token) => {
 const nameInputElement = document.getElementById('name-input')
 const commentInputElement = document.getElementById('comment-input')
     fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
@@ -68,7 +62,7 @@ const commentInputElement = document.getElementById('comment-input')
     })
         .then(() => {
             // GET через вызов функции
-            return fetchRenderComments(comments);
+            return fetchRenderComments(comments, token);
         })
         .then(() => {
             // Отработка функционала кнопки и полей после публикации комментария
@@ -90,10 +84,9 @@ const commentInputElement = document.getElementById('comment-input')
             // user exp: возврат активной кнопки после публикации коммента 
             buttonElement.disabled = false;
             buttonElement.textContent = 'Добавить'
-
         })
     initLikeButtonOnOff(comments)
-  
+ 
 }
 
 
