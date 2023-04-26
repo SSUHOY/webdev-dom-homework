@@ -19,16 +19,23 @@ export function renderLoginComponent({ appEl, setToken, fetchRenderComments, com
     appEl.innerHTML = appHtml;
 
     document.getElementById('login-button').addEventListener('click', () => {
-        setToken('Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck');
-        // // loadingCommentsList(comments, token)
-        // fetchRenderComments(comments,'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck')
+      const login = document.getElementById('login-input').value;
+      const password = document.getElementById('login-input').value;
 
+      if (!login) {
+        alert ('введите логин')
+        return
+      }
+
+      if(!password) {
+        alert('введите пароль')
+        return
+      }
         loginUser({
             login:'admin',
             password:'admin',
         }).then((user) => {
-                console.log(user);
-                setToken(`Bearer ${user.token}`);
+                setToken(`Bearer ${user.user.token}`);
                 fetchRenderComments(comments, 'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck');
             });
     })
