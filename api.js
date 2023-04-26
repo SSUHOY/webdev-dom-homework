@@ -3,9 +3,8 @@ import { loadingCommentsList, renderComments } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
 
 // GET комментариев
-
 const fetchRenderComments = (comments, token) => {
-    // loadingCommentsList(comments);
+    // loadingCommentsList(comments, token)
     const containerElement = document.querySelector('.container');
     fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
         method: "GET",
@@ -88,6 +87,22 @@ const commentInputElement = document.getElementById('comment-input')
     initLikeButtonOnOff(comments, token)
  
 }
+
+export function loginUser({login, password}) {
+    // const nameInputElement = document.getElementById('name-input')
+    // const commentInputElement = document.getElementById('comment-input')
+return  fetch("https://webdev-hw-api.vercel.app/api/user/login", {
+            method: 'POST',
+            body: JSON.stringify({
+               login,
+               password,
+            }),          
+        }).then((response) => {
+            console.log(response);
+           return response.json();
+        })
+    }
+
 
 
 // ЭКСПОРТ ФУНКЦИЙ ИЗ МОДУЛЯ
