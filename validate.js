@@ -1,5 +1,5 @@
-import { addComment, fetchRenderComments } from "./api.js";
-import { renderComments } from "./renderModule.js";
+import { addComment } from "./api.js";
+
 
 
 export function validateFn(comments, token) {

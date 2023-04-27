@@ -98,9 +98,11 @@ return  fetch("https://webdev-hw-api.vercel.app/api/user/login", {
                password,
             }),          
         }).then((response) => {
-            console.log(response);
+            if(response.status === 400) {
+                throw new Error('Неверный логин или пароль')
+            }
            return response.json();
-        })
+        });
     }
 
 
