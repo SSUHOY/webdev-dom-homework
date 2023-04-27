@@ -52,7 +52,8 @@ body {
 
   .comment-footer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+
   }
 
   .comment-body {
@@ -172,15 +173,19 @@ body {
   }
 
   .renderApp {
-    background: #202020;
+    font-family: Helvetica;
+    color: #ffffff;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100vh;
-    
+    padding-top: 80px;
+    padding-bottom: 200px;
+    background: #202020;
+    min-height: 100vh;
   }
 
   .login-form {
+    font-family: Helvetica;
     display: flex;
     width: 596px;
     box-sizing: border-box;
@@ -227,4 +232,14 @@ body {
   text-decoration: underline;
   color: white;
   padding-bottom: 15px;
+  }
+
+  .delete-button {
+ background: transparent;
+ border-radius: 100%;
+ border: none;
+ cursor: pointer;
+  }
+  .delete_fn {
+   margin: 10px;
   }

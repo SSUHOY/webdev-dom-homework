@@ -1,5 +1,5 @@
 // ИМПОРТ МОДУЛЕЙ
-import { loadingCommentsList, renderComments } from "./renderModule.js";
+import { renderComments as renderApp } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
 
 // GET комментариев
@@ -10,7 +10,7 @@ const fetchRenderComments = (comments, token) => {
         method: "GET",
         headers: {
             Authorization: token,
-        },       
+        },
     }).then((response) => {
         return response.json();
     }).then((responseData) => {
@@ -24,19 +24,32 @@ const fetchRenderComments = (comments, token) => {
                 isLiked: false,
             };
         })
-        // console.log(formatComments);
         // получили данные и рендерим их в приложении
         comments = formatComments;
-        renderComments(comments, token);
+        renderApp(comments, token);
         // let span = containerElement.querySelector("span");
         // span.remove();
     })
 }
 
+// Удаление комментария
+export function deleteComments({ token, id }) {
+    return fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments" + id, {
+        method: "DELETE",
+        headers: {
+            Authorization: token,
+        },
+    })
+        .then((response) => {
+            return response.json();
+        })
+}
+
+
 // POST КОММЕНТАРИЕВ
 const addComment = (comments, token) => {
-const nameInputElement = document.getElementById('name-input')
-const commentInputElement = document.getElementById('comment-input')
+    const nameInputElement = document.getElementById('name-input')
+    const commentInputElement = document.getElementById('comment-input')
     fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
         method: 'POST',
         headers: {
@@ -45,20 +58,20 @@ const commentInputElement = document.getElementById('comment-input')
         body: JSON.stringify({
             name: nameInputElement.value,
             text: commentInputElement.value,
-        }),          
+        }),
     })
-    .then((response) => {
+        .then((response) => {
 
-        // Ветвление с выбрасыванием ошибки в случае отключенного интернета
-        if (response.status === 500) {
-            throw new Error('Сервер сломался')
-            // ошибка при вводе коротких данных, менее 3 символов в поле имя и в поле комменты
-        } else if (response.status === 400) {
-            throw new Error('Слишком короткое значение, поле имя и комментарий должно содержать хотя бы 3 символа')
-        } else {
-            return response.json();
-        }
-    })
+            // Ветвление с выбрасыванием ошибки в случае отключенного интернета
+            if (response.status === 500) {
+                throw new Error('Сервер сломался')
+                // ошибка при вводе коротких данных, менее 3 символов в поле имя и в поле комменты
+            } else if (response.status === 400) {
+                throw new Error('Слишком короткое значение, поле имя и комментарий должно содержать хотя бы 3 символа')
+            } else {
+                return response.json();
+            }
+        })
         .then(() => {
             // GET через вызов функции
             return fetchRenderComments(comments, token);
@@ -85,25 +98,40 @@ const commentInputElement = document.getElementById('comment-input')
             buttonElement.textContent = 'Добавить'
         })
     initLikeButtonOnOff(comments, token)
- 
+
 }
 
-export function loginUser({login, password}) {
-    // const nameInputElement = document.getElementById('name-input')
-    // const commentInputElement = document.getElementById('comment-input')
-return  fetch("https://webdev-hw-api.vercel.app/api/user/login", {
-            method: 'POST',
-            body: JSON.stringify({
-               login,
-               password,
-            }),          
-        }).then((response) => {
-            if(response.status === 400) {
-                throw new Error('Неверный логин или пароль')
-            }
-           return response.json();
-        });
-    }
+export function loginUser({ login, password }) {
+    return fetch("https://webdev-hw-api.vercel.app/api/user/login", {
+        method: 'POST',
+        body: JSON.stringify({
+            login,
+            password,
+        }),
+    }).then((response) => {
+        if (response.status === 400) {
+            throw new Error('Неверный логин или пароль')
+        }
+        return response.json();
+    });
+}
+
+
+export function registerUser({ login, password, name }) {
+    return fetch("https://webdev-hw-api.vercel.app/api/user", {
+        method: 'POST',
+        body: JSON.stringify({
+            login,
+            password,
+            name,
+        }),
+    }).then((response) => {
+        if (response.status === 400) {
+            throw new Error('Такой пользователь уже существует')
+        }
+        return response.json();
+    });
+}
 
 
 

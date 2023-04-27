@@ -1,6 +1,6 @@
 import { sanitizeHtml } from "./sanitizeHtml.js";
 import { validateFn } from "./validate.js";
-import { fetchRenderComments } from "./api.js";
+import { deleteComments, fetchRenderComments } from "./api.js";
 import { renderLoginComponent } from "./components/login-components.js";
 
 // Строка загрузки комментов
@@ -34,28 +34,6 @@ const renderApp = (comments, token) => {
     const appEl = document.getElementById('app');
 
     if (!token) {
-        // ФОРМА ВХОДА
-        // const appHtml = `
-        // <div class="form">
-        // <h3 class="form-title">Форма входа</h3>
-        //     <div class="form-row">
-        //     Логин
-        //     <input type="text" id="login-input" class="input">
-        //     <br>
-        //     Пароль
-        //     <input type="password" id="password-input" class="input">
-        //     </div>
-        //     <br>
-        //     <button class="button" id='login-button'>Войти</button>
-        //     </div>    
-        // `
-        // appEl.innerHTML = appHtml;
-
-        // document.getElementById('login-button').addEventListener('click', () => {
-        //     token = 'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck'
-        //     // loadingCommentsList(comments, token);
-        //     fetchRenderComments(comments, token)
-        // })
         renderLoginComponent({
             appEl,
             setToken: (newToken) => {
@@ -68,7 +46,7 @@ const renderApp = (comments, token) => {
 
     const commentsHtml = comments.map((comment, index) => {
         return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
-      <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class="likes">
+      <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class='delete_fn'>  <button class="delete-button" data-index="${index}">❌</button> </div> <div class="likes">
             <span class="likes-counter" >${comments[index].likes}</span>
             <button class="like-button ${comments[index].isLiked}" data-index="${index}"></button>
           </div></div></li>`
@@ -79,17 +57,38 @@ const renderApp = (comments, token) => {
         <div class="container">
     ${commentsHtml}
         <ul class="comments" id="list">
-        <!-- Список рендерится из JS -->
         </ul>
-        <div class="add-form">
+        ${token ? `<div class="add-form">
         <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" />
         <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"
             id="comment-input"></textarea>
         <div class="add-form-row">
             <button class="add-form-button" id="buttonElement">Написать</button>
-        </div>
-    `
+        </div>`: `<p>Чтобы добавить комментарий, <a class="check" id="auth">авторизуйтесь</a></p>`}`;
     appEl.innerHTML = appHtml;
+
+
+// Кнопка удаления комментария
+const deleteButtons = document.querySelectorAll(".delete-button");
+
+    for (const deleteButton of deleteButtons) {
+        deleteButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+
+            const id = deleteButton.dataset.id;
+
+            // подписываемся на успешное завершение запроса с помощью then
+            deleteComments({ token, id })
+
+                .then((responseData) => {
+                    // получили данные и рендерим их в приложении
+                    tasks = responseData.todos;
+                    renderApp();
+                });
+        });
+    }
+
+
     // fetchRenderComments(comments)
     initReplyListeners(comments, token);
     initLikeButtonOnOff(comments, token);
@@ -132,10 +131,6 @@ const initReplyListeners = (comments, token) => {
         }
     }
 }
-
-
-
-
 
 // ЭКСПОРТ ФУНКЦИЙ ИЗ МОДУЛЯ
 export { renderApp as renderComments };
