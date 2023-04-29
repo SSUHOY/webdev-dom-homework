@@ -43,9 +43,10 @@ export function renderLoginComponent({ appEl, setToken, fetchRenderComments, com
           login: login,
           password: password,
         }).then((user) => {
+          console.log(user.user.name);
           setToken(`Bearer ${user.user.token}`);
           setUser(user.user);
-          fetchRenderComments(comments, `Bearer ${user.user.token}`);
+          fetchRenderComments(comments, `Bearer ${user.user.token}`, user.user.name);
         }).catch((error) => {
        console.log(error);
           alert(error.message);
@@ -77,7 +78,7 @@ export function renderLoginComponent({ appEl, setToken, fetchRenderComments, com
         }).then((user) => {
           setToken(`Bearer ${user.user.token}`);
           setUser(user.user);
-          fetchRenderComments(comments, `Bearer ${user.user.token}`);
+          fetchRenderComments(comments, `Bearer ${user.user.token}`, user.user.name);
         }).catch((error) => {
           alert(error.message);
         });

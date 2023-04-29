@@ -15,6 +15,8 @@ const renderApp = (comments, token, user) => {
 
     const appEl = document.getElementById('app');
 
+
+
     const commentsHtml = comments.map((comment, index) => {
         return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
       <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'><div class="likes">
@@ -24,13 +26,16 @@ const renderApp = (comments, token, user) => {
 
     }).join('')
     // ФОРМА ПРИЛОЖЕНИЯ
+
+    
     const appHtml = `
         <div class="container">
     ${commentsHtml}
         <ul class="comments" id="list">
         </ul>
         ${token ? `<div class="add-form">
-        <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" disabled value="${user.name}" />
+        
+        <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" disabled value="${user}" />
         <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"
             id="comment-input"></textarea>
         <div class="add-form-row">
@@ -99,30 +104,6 @@ const initReplyListeners = (comments, token) => {
         }
     }
 }
-
-
-// // Кнопка удаления комментария
-// const initDeleteButton = ({token, _id}) => {
-//     const deleteButtons = document.querySelectorAll(".delete-button");
-
-//         for (const deleteButton of deleteButtons) {
-//             deleteButton.addEventListener("click", (event) => {
-//                 event.stopPropagation();
-
-//                 const id = deleteButton.dataset.id;
-
-//                 // подписываемся на успешное завершение запроса с помощью then
-//                 deleteComments({ token, _id })
-
-//                     .then((responseData) => {
-//                         // получили данные и рендерим их в приложении
-//                         tasks = responseData.todos;
-//                         renderApp(comments, token, _id);
-//                     });
-//             });
-//         }
-//     }
-
 
 
 // ЭКСПОРТ ФУНКЦИЙ ИЗ МОДУЛЯ

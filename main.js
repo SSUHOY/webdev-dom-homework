@@ -17,7 +17,7 @@ let token = null;
 let user = null;
 
 // FETCH ЗАПРОС В API GET ИЗ МОДУЛЯ
-fetchRenderComments(comments, token);
+fetchRenderComments(comments, token, user);
 // РЕНДЕР КОММЕНТОВ ИЗ МОДУЛЯ
 renderApp(comments, token, user);
 // ОЧИСТКА КОДА

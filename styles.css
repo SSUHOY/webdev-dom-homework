@@ -183,6 +183,7 @@ justify-content: flex-end;
     padding-bottom: 200px;
     background: #202020;
     min-height: 100vh;
+    justify-content: center;
   }
 
   .login-form {
@@ -211,7 +212,9 @@ justify-content: flex-end;
   text-align: center;
   color: white;
   padding-top: 15px;
+  font-size: 32px;
 }
+
 
 .userinput {
   margin-top: 12px;
