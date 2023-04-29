@@ -52,7 +52,9 @@ body {
 
   .comment-footer {
     display: flex;
-    justify-content: flex-end;
+
+justify-content: flex-end;
+
   }
 
   .comment-body {
@@ -142,4 +144,110 @@ body {
 
   .error {
     background-color: rgb(214, 94, 94);
+  }
+  
+  .container {
+    gap:32px;
+  }
+
+  .form { 
+    font-family: Helvetica;
+    display: flex;
+  flex-direction: column;
+  background: radial-gradient( 75.42% 75.42% at 50% 42.37%, rgba(53, 53, 53, 0) 22.92%, #7334ea 100% );
+  filter: drop-shadow(0px 20px 67px rgba(0, 0, 0, 0.08));
+  box-sizing: border-box;
+  border-radius: 20px;
+  width: 596px;
+  align-items: center;
+  }
+
+  .button {
+    margin-top: 24px;
+    font-size: 24px;
+    padding: 10px 20px;
+    background-color: #bcec30;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    
+  }
+
+  .renderApp {
+    font-family: Helvetica;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+    padding-bottom: 200px;
+    background: #202020;
+    min-height: 100vh;
+    justify-content: center;
+  }
+
+  .login-form {
+    font-family: Helvetica;
+    display: flex;
+    width: 596px;
+    box-sizing: border-box;
+    background: radial-gradient( 75.42% 75.42% at 50% 42.37%, rgba(53, 53, 53, 0) 22.92%, #7334ea 100% );
+    filter: drop-shadow(0px 20px 67px rgba(0, 0, 0, 0.08));
+    border-radius: 20px;
+    align-items: center;
+  }
+
+  .input {
+    margin-top: 24px;
+    font-size: 24px;
+    padding: 10px 20px;
+    background-color: #bcec30;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+  }
+
+.form-title {
+  font-family: Helvetica;
+  text-align: center;
+  color: white;
+  padding-top: 15px;
+  font-size: 32px;
+}
+
+
+.userinput {
+  margin-top: 12px;
+    font-size: 24px;
+    padding: 10px 20px;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 500px;
+    
+}
+
+  .toggle {
+  margin-top: 25px;
+  font-family: Helvetica;
+  border: none;
+  background: rgba(0,0, 0, 0);
+  text-decoration: underline;
+  color: white;
+  padding-bottom: 15px;
+  }
+
+  .delete-button {
+ background: transparent;
+ border-radius: 100%;
+ border: none;
+ cursor: pointer;
+  }
+  .delete_fn {
+   margin: 10px;
+  }
+  .check {
+    text-decoration: underline;
+    cursor: pointer;
   }
