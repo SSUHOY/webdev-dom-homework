@@ -1,6 +1,6 @@
 import { fetchRenderComments } from "./api.js";
 import { sanitizeHtml } from "./sanitizeHtml.js";
-import { renderComments as renderApp } from "./renderModule.js";
+import { renderApp } from "./renderModule.js";
 
 // План
 // 1.Перенести разметку в модуль (+)
@@ -13,16 +13,17 @@ import { renderComments as renderApp } from "./renderModule.js";
 let comments = [];
 
 let token = null;
+let user = null;
 
 // FETCH ЗАПРОС В API GET ИЗ МОДУЛЯ
 fetchRenderComments(comments, token);
 // РЕНДЕР КОММЕНТОВ ИЗ МОДУЛЯ
-renderApp(comments, token);
+renderApp(comments, token, user);
+
 // ОЧИСТКА КОДА
 sanitizeHtml();
-// Валидация и пост комментария
-// validateFn(comments, token)
 
+// renderApp(comments, token, user);
 
 
 console.log("It works!");

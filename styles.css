@@ -52,7 +52,8 @@ body {
 
   .comment-footer {
     display: flex;
-    justify-content: space-between;
+
+justify-content: flex-end;
 
   }
 
@@ -242,4 +243,8 @@ body {
   }
   .delete_fn {
    margin: 10px;
+  }
+  .check {
+    text-decoration: underline;
+    cursor: pointer;
   }

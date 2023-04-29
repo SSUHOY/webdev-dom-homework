@@ -1,11 +1,10 @@
 // ИМПОРТ МОДУЛЕЙ
-import { renderComments as renderApp } from "./renderModule.js";
+import { renderApp } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
 
 // GET комментариев
 const fetchRenderComments = (comments, token) => {
-    // loadingCommentsList(comments, token)
-    const containerElement = document.querySelector('.container');
+    // const containerElement = document.querySelector('.container');
     fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
         method: "GET",
         headers: {
@@ -33,8 +32,8 @@ const fetchRenderComments = (comments, token) => {
 }
 
 // Удаление комментария
-export function deleteComments({ token, id }) {
-    return fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments" + id, {
+export function deleteComments({ token, _id }) {
+    return fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments" + _id, {
         method: "DELETE",
         headers: {
             Authorization: token,
@@ -80,7 +79,6 @@ const addComment = (comments, token) => {
             // Отработка функционала кнопки и полей после публикации комментария
             buttonElement.disabled = false;
             buttonElement.textContent = 'Добавить'
-            nameInputElement.value = ''
             commentInputElement.value = ''
         }).catch((error) => {
             // Alert с ошибкой, в случае, если интернет не функционирует - РАБОТАЕТ

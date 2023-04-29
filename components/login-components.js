@@ -1,11 +1,7 @@
-import { loginUser, loginUser as registerUser } from "../api.js";
+import { loginUser, registerUser } from "../api.js";
 
-export function renderLoginComponent({ appEl, setToken, fetchRenderComments, comments }) {
+export function renderLoginComponent({ appEl, setToken, fetchRenderComments, comments, setUser }) {
   let isLoginMode = true;
-
-  // const renderUnauthorizedApp = () => {
-
-  // }
 
   const renderForm = () => {
 
@@ -47,16 +43,18 @@ export function renderLoginComponent({ appEl, setToken, fetchRenderComments, com
           password: password,
         }).then((user) => {
           setToken(`Bearer ${user.user.token}`);
-          fetchRenderComments(comments, 'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck');
+          setUser(user.user);
+          fetchRenderComments(comments, `Bearer ${user.user.token}`);
         }).catch((error) => {
-          // Выводить алерт
+       console.log(error);
           alert(error.message);
         });
 
       } else {
         const login = document.getElementById('login-input').value;
         const password = document.getElementById('password-input').value;
-        const name = document.getElementById('name-input').value;
+        let name = document.getElementById('name-input').value;
+        // name=user
 
         if (!name) {
           alert('Введите имя');
@@ -70,18 +68,18 @@ export function renderLoginComponent({ appEl, setToken, fetchRenderComments, com
           alert('Введите пароль');
           return;
         }
-
-
-// Форма регистрации USER
+        // Форма регистрации USER
         registerUser({
           login: login,
           password: password,
           name: name,
         }).then((user) => {
+          console.log(user);
           setToken(`Bearer ${user.user.token}`);
-          fetchRenderComments(comments, 'Bearer bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck');
+          setUser(user.user);
+          fetchRenderComments(comments, `Bearer ${user.user.token}`);
         }).catch((error) => {
-           console.log(error);
+          console.log(error);
           alert(error.message);
         });
       }
