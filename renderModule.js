@@ -2,7 +2,6 @@ import { sanitizeHtml } from "./sanitizeHtml.js";
 import { validateFn } from "./validate.js";
 import { fetchRenderComments } from "./api.js";
 import { renderLoginComponent } from "./components/login-components.js";
-import { deleteComments } from "./api.js";
 
 // Строка загрузки комментов
 function loadingCommentsList(comments) {
@@ -11,24 +10,6 @@ function loadingCommentsList(comments) {
         containerElement.insertAdjacentHTML("afterbegin", "<span>Подождите, список загружается...</span>")
     }
 }
-
-
-// export const renderUnauthorizedApp = (comments, index) => {
-//     const appUnAuthEl = document.querySelectorAll('app');
-
-
-//     const appUnAuthElHtml = comments.map((comment, index) => {
-//        return `<li class = 'comment'  data-index="${index}"><div class = 'comment-header'><div>${sanitizeHtml(comments[index].name)}</div><div>${comments[index].date}</div></div>
-//         <div class="comment-body" ><div class = 'comment-text' data-index="${index}">${sanitizeHtml(comments[index].text)}</div></div><div class ='comment-footer'> <div class="likes">
-//               <span class="likes-counter" >${comments[index].likes}</span>
-//               <button class="like-button ${comments[index].isLiked}" data-index="${index}"></button>
-//             </div></div></li>`
-//     }).join('')
-
-//         appUnAuthEl.innerHTML = appUnAuthElHtml;
-
-// }
-
 
 const renderApp = (comments, token, user, name) => {
 
@@ -121,27 +102,27 @@ const initReplyListeners = (comments, token) => {
 }
 
 
-// Кнопка удаления комментария
-const initDeleteButton = ({token, _id}) => {
-    const deleteButtons = document.querySelectorAll(".delete-button");
+// // Кнопка удаления комментария
+// const initDeleteButton = ({token, _id}) => {
+//     const deleteButtons = document.querySelectorAll(".delete-button");
 
-        for (const deleteButton of deleteButtons) {
-            deleteButton.addEventListener("click", (event) => {
-                event.stopPropagation();
+//         for (const deleteButton of deleteButtons) {
+//             deleteButton.addEventListener("click", (event) => {
+//                 event.stopPropagation();
 
-                const id = deleteButton.dataset.id;
+//                 const id = deleteButton.dataset.id;
 
-                // подписываемся на успешное завершение запроса с помощью then
-                deleteComments({ token, _id })
+//                 // подписываемся на успешное завершение запроса с помощью then
+//                 deleteComments({ token, _id })
 
-                    .then((responseData) => {
-                        // получили данные и рендерим их в приложении
-                        tasks = responseData.todos;
-                        renderApp(comments, token, _id);
-                    });
-            });
-        }
-    }
+//                     .then((responseData) => {
+//                         // получили данные и рендерим их в приложении
+//                         tasks = responseData.todos;
+//                         renderApp(comments, token, _id);
+//                     });
+//             });
+//         }
+//     }
 
 
 

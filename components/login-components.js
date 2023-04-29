@@ -3,6 +3,8 @@ import { loginUser, registerUser } from "../api.js";
 export function renderLoginComponent({ appEl, setToken, fetchRenderComments, comments, setUser }) {
   let isLoginMode = true;
 
+
+  // Рендер формы авторизации/регистрации
   const renderForm = () => {
 
     const appHtml = `

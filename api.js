@@ -26,23 +26,21 @@ const fetchRenderComments = (comments, token) => {
         // получили данные и рендерим их в приложении
         comments = formatComments;
         renderApp(comments, token);
-        // let span = containerElement.querySelector("span");
-        // span.remove();
     })
 }
 
 // Удаление комментария
-export function deleteComments({ token, _id }) {
-    return fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments" + _id, {
-        method: "DELETE",
-        headers: {
-            Authorization: token,
-        },
-    })
-        .then((response) => {
-            return response.json();
-        })
-}
+// export function deleteComments({ token, _id }) {
+//     return fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments" + _id, {
+//         method: "DELETE",
+//         headers: {
+//             Authorization: token,
+//         },
+//     })
+//         .then((response) => {
+//             return response.json();
+//         })
+// }
 
 
 // POST КОММЕНТАРИЕВ
@@ -107,6 +105,7 @@ export function loginUser({ login, password }) {
             password,
         }),
     }).then((response) => {
+        console.log(response);
         if (response.status === 400) {
             throw new Error('Неверный логин или пароль')
         }

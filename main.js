@@ -7,7 +7,7 @@ import { renderApp } from "./renderModule.js";
 // 2. Сделать форму входа динамической (+)
 // 3. Отрефакторить приложение на модули (+)
 // 4. Создать форму регистрации (+)
-// 5. Оживить форму регистрации ()
+// 5. Оживить форму регистрации (+)
 
 // массив Comments, рендерится через API
 let comments = [];
@@ -19,11 +19,8 @@ let user = null;
 fetchRenderComments(comments, token);
 // РЕНДЕР КОММЕНТОВ ИЗ МОДУЛЯ
 renderApp(comments, token, user);
-
 // ОЧИСТКА КОДА
 sanitizeHtml();
-
-// renderApp(comments, token, user);
 
 
 console.log("It works!");
