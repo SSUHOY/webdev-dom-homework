@@ -11,7 +11,7 @@ function loadingCommentsList(comments) {
     }
 }
 
-const renderApp = (comments, token, user, name) => {
+const renderApp = (comments, token, user) => {
 
     const appEl = document.getElementById('app');
 
@@ -30,7 +30,7 @@ const renderApp = (comments, token, user, name) => {
         <ul class="comments" id="list">
         </ul>
         ${token ? `<div class="add-form">
-        <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" disabled value="${user}" />
+        <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input" disabled value="${user.name}" />
         <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"
             id="comment-input"></textarea>
         <div class="add-form-row">
@@ -61,7 +61,6 @@ const renderApp = (comments, token, user, name) => {
     initReplyListeners(comments, token);
     initLikeButtonOnOff(comments, token);
     validateFn(comments, token)
-    initDeleteButton(token, _id);
 
 }
 

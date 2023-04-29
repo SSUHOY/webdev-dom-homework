@@ -3,7 +3,7 @@ import { renderApp } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
 
 // GET комментариев
-const fetchRenderComments = (comments, token) => {
+const fetchRenderComments = (comments, token, name) => {
     // const containerElement = document.querySelector('.container');
     fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
         method: "GET",
@@ -25,23 +25,9 @@ const fetchRenderComments = (comments, token) => {
         })
         // получили данные и рендерим их в приложении
         comments = formatComments;
-        renderApp(comments, token);
+        renderApp(comments, token, name);
     })
 }
-
-// Удаление комментария
-// export function deleteComments({ token, _id }) {
-//     return fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments" + _id, {
-//         method: "DELETE",
-//         headers: {
-//             Authorization: token,
-//         },
-//     })
-//         .then((response) => {
-//             return response.json();
-//         })
-// }
-
 
 // POST КОММЕНТАРИЕВ
 const addComment = (comments, token) => {

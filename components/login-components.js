@@ -26,7 +26,7 @@ export function renderLoginComponent({ appEl, setToken, fetchRenderComments, com
     document.getElementById('login-button').addEventListener('click', () => {
 
       const login = document.getElementById('login-input').value;
-      const password = document.getElementById('login-input').value;
+      const password = document.getElementById('password-input').value;
 
       if (isLoginMode) {
         if (!login) {
@@ -38,7 +38,6 @@ export function renderLoginComponent({ appEl, setToken, fetchRenderComments, com
           alert('Введите пароль')
           return
         }
-
         // Форма регистрации LOGIN
         loginUser({
           login: login,
@@ -76,12 +75,10 @@ export function renderLoginComponent({ appEl, setToken, fetchRenderComments, com
           password: password,
           name: name,
         }).then((user) => {
-          console.log(user);
           setToken(`Bearer ${user.user.token}`);
           setUser(user.user);
           fetchRenderComments(comments, `Bearer ${user.user.token}`);
         }).catch((error) => {
-          console.log(error);
           alert(error.message);
         });
       }
