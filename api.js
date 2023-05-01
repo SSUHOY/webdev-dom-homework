@@ -1,6 +1,7 @@
 // ИМПОРТ МОДУЛЕЙ
 import { renderApp } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
+import { format } from "date-fns";
 
 // GET комментариев
 const fetchRenderComments = (comments, token, name) => {
