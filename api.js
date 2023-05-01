@@ -20,7 +20,7 @@ const fetchRenderComments = (comments, token, name) => {
                 name: comment.author.name,
                 login: comment.author.login,
                 text: comment.text,
-                date: format(new Date(comment.date), 'dd/MM/yyyy hh:mm:ss'),
+                date: format(new Date(comment.date), 'yyyy-mm-dd hh:mm:ss'),
                 likes: comment.likes,
                 isLiked: false,
             };
