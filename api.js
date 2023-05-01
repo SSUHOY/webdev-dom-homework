@@ -1,10 +1,12 @@
 // ИМПОРТ МОДУЛЕЙ
 import { renderApp } from "./renderModule.js";
 import { initLikeButtonOnOff } from "./renderModule.js";
+import { format } from "date-fns";
 
 // GET комментариев
 const fetchRenderComments = (comments, token, name) => {
     // const containerElement = document.querySelector('.container');
+   
     fetch("https://webdev-hw-api.vercel.app/api/v2/sam-sukhoi/comments", {
         method: "GET",
         headers: {
@@ -18,7 +20,7 @@ const fetchRenderComments = (comments, token, name) => {
                 name: comment.author.name,
                 login: comment.author.login,
                 text: comment.text,
-                date: new Date().toLocaleString().slice(0, -3),
+                date: format(new Date(comment.date), 'yyyy-mm-dd hh:mm:ss'),
                 likes: comment.likes,
                 isLiked: false,
             };
